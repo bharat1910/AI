@@ -39,7 +39,7 @@ public class SEARCH {
 	public void run() throws IOException
 	{
 		@SuppressWarnings("resource")
-		BufferedReader reader = new BufferedReader(new FileReader("/home/anusha/Prac/AI/maze.txt"));
+		BufferedReader reader = new BufferedReader(new FileReader("hw0/1.1/maze_small.txt"));
 		String line = null;
 		int count = 0;
 		
