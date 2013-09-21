@@ -31,7 +31,7 @@ public class UCS {
 	public void run() throws IOException
 	{
 		@SuppressWarnings("resource")
-		BufferedReader reader = new BufferedReader(new FileReader("hw0/1.1/maze_medium.txt"));
+		BufferedReader reader = new BufferedReader(new FileReader("hw0/1.2/maze_medium.txt"));
 		String line = null;
 		int count = 0;
 		
