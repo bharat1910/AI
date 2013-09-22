@@ -66,6 +66,18 @@ public class SEARCH {
 		ASTAR();
 	}
 
+	private boolean isValid(int x, int y, boolean[][] isVisited)
+	{
+		if (maze[x][y] == '%' || isVisited[x][y])
+		{
+			return false;
+		}
+		else {
+			isVisited[x][y] = true;
+			return true;
+		}
+	}
+	
 	@SuppressWarnings("unchecked")
 	private void DFS()
 	{
@@ -101,23 +113,19 @@ public class SEARCH {
 				break;
 			}
 			
-			if (!(maze[x - 1][y] == '%' || isVisited[x - 1][y])) {
-				isVisited[x-1][y] = true;
+			if (isValid(x-1, y, isVisited)) {
 				lifo.push(new POINT(x - 1, y, count + 1));
 			}
 			
-			if (!(maze[x][y - 1] == '%' || isVisited[x][y - 1])) {
-				isVisited[x][y-1] = true;
+			if (isValid(x, y-1, isVisited)) {
 				lifo.push(new POINT(x, y - 1, count + 1));
 			}
 			
-			if (!(maze[x][y + 1] == '%' || isVisited[x][y + 1])) {
-				isVisited[x][y+1] = true;
+			if (isValid(x, y+1, isVisited)) {
 				lifo.push(new POINT(x, y + 1, count + 1));
 			}
 			
-			if (!(maze[x + 1][y] == '%' || isVisited[x + 1][y])) {
-				isVisited[x+1][y] = true;
+			if (isValid(x+1, y, isVisited)) {
 				lifo.push(new POINT(x + 1, y, count + 1));
 			}
 		}
@@ -162,23 +170,19 @@ public class SEARCH {
 				break;
 			}
 			
-			if (!(maze[x - 1][y] == '%' || isVisited[x - 1][y])) {
-				isVisited[x - 1][y] = true;
+			if (isValid(x-1, y, isVisited)) {
 				fifo.add(new POINT(x - 1, y, count + 1));
 			}
 			
-			if (!(maze[x][y - 1] == '%' || isVisited[x][y - 1])) {
-				isVisited[x][y-1] = true;
+			if (isValid(x, y-1, isVisited)) {
 				fifo.add(new POINT(x, y - 1, count + 1));
 			}
 			
-			if (!(maze[x][y + 1] == '%' || isVisited[x][y + 1])) {
-				isVisited[x][y+1] = true;
+			if (isValid(x, y+1, isVisited)) {
 				fifo.add(new POINT(x, y + 1, count + 1));
 			}
 			
-			if (!(maze[x + 1][y] == '%' || isVisited[x + 1][y])) {
-				isVisited[x + 1][y] = true;
+			if (isValid(x+1, y, isVisited)) {
 				fifo.add(new POINT(x + 1, y, count + 1));
 			}
 		}
@@ -224,23 +228,19 @@ public class SEARCH {
 				break;
 			}
 			
-			if (!(maze[x - 1][y] == '%' || isVisited[x - 1][y])) {
-				isVisited[x-1][y] = true;
+			if (isValid(x-1, y, isVisited)) {
 				queue.add(new POINT(x - 1, y, count + 1, Math.abs(endi - x + 1) + Math.abs(endj - y)));
 			}
 			
-			if (!(maze[x][y - 1] == '%' || isVisited[x][y - 1])) {
-				isVisited[x][y-1] = true;
+			if (isValid(x, y-1, isVisited)) {
 				queue.add(new POINT(x, y - 1, count + 1, Math.abs(endi - x) + Math.abs(endj - y + 1)));
 			}
 			
-			if (!(maze[x][y + 1] == '%' || isVisited[x][y + 1])) {
-				isVisited[x][y+1] = true;
+			if (isValid(x, y+1, isVisited)) {
 				queue.add(new POINT(x, y + 1, count + 1, Math.abs(endi - x) + Math.abs(endj - y - 1)));
 			}
 			
-			if (!(maze[x + 1][y] == '%' || isVisited[x + 1][y])) {
-				isVisited[x+1][y] = true;
+			if (isValid(x+1, y, isVisited)) {
 				queue.add(new POINT(x + 1, y, count + 1, Math.abs(endi - x - 1) + Math.abs(endj - y)));
 			}
 		}
@@ -286,23 +286,19 @@ public class SEARCH {
 				break;
 			}
 			
-			if (!(maze[x - 1][y] == '%' || isVisited[x - 1][y])) {
-				isVisited[x-1][y] = true;
+			if (isValid(x-1, y, isVisited)) {
 				queue.add(new POINT(x - 1, y, count + 1, count + 1 + Math.abs(endi - x + 1) + Math.abs(endj - y)));
 			}
 			
-			if (!(maze[x][y - 1] == '%' || isVisited[x][y - 1])) {
-				isVisited[x][y-1] = true;
+			if (isValid(x, y-1, isVisited)) {
 				queue.add(new POINT(x, y - 1, count + 1, count + 1 + Math.abs(endi - x) + Math.abs(endj - y + 1)));
 			}
 			
-			if (!(maze[x][y + 1] == '%' || isVisited[x][y + 1])) {
-				isVisited[x][y+1] = true;
+			if (isValid(x, y+1, isVisited)) {
 				queue.add(new POINT(x, y + 1, count + 1, count + 1 + Math.abs(endi - x) + Math.abs(endj - y - 1)));
 			}
 			
-			if (!(maze[x + 1][y] == '%' || isVisited[x + 1][y])) {
-				isVisited[x+1][y] = true;
+			if (isValid(x+1, y, isVisited)) {
 				queue.add(new POINT(x + 1, y, count + 1, count + 1 + Math.abs(endi - x - 1) + Math.abs(endj - y)));
 			}
 		}
