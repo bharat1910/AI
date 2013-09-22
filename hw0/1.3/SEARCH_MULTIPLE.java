@@ -63,11 +63,11 @@ public class SEARCH_MULTIPLE {
 		@SuppressWarnings("rawtypes")
 		Stack lifo = new Stack();
 		lifo.add(new POINT(starti, startj, 0));
+		isVisited[starti][startj] = true;
 		
 		while (!lifo.empty()) {
 			POINT top = (POINT) lifo.pop();
 			int x = top.x, y = top.y, count = top.count;
-			isVisited[x][y] = true;
 			
 			if (maximum_tree_depth_searched < count) {
 				maximum_tree_depth_searched = count;
@@ -85,18 +85,22 @@ public class SEARCH_MULTIPLE {
 			
 			if (!(maze[x - 1][y] == '%' || isVisited[x - 1][y])) {
 				lifo.push(new POINT(x - 1, y, count + 1));
+				isVisited[x-1][y] = true;
 			}
 			
 			if (!(maze[x][y - 1] == '%' || isVisited[x][y - 1])) {
 				lifo.push(new POINT(x, y - 1, count + 1));
+				isVisited[x][y-1] = true;
 			}
 			
 			if (!(maze[x][y + 1] == '%' || isVisited[x][y + 1])) {
 				lifo.push(new POINT(x, y + 1, count + 1));
+				isVisited[x][y+1] = true;
 			}
 			
 			if (!(maze[x + 1][y] == '%' || isVisited[x + 1][y])) {
 				lifo.push(new POINT(x + 1, y, count + 1));
+				isVisited[x+1][y] = true;
 			}
 		}
 		
@@ -115,11 +119,11 @@ public class SEARCH_MULTIPLE {
 		
 		Queue<POINT> fifo = new LinkedList<>();
 		fifo.add(new POINT(starti, startj, 0));
+		isVisited[starti][startj] = true;
 		
 		while (!fifo.isEmpty()) {
 			POINT top = (POINT) fifo.remove();
 			int x = top.x, y = top.y, count = top.count;
-			isVisited[x][y] = true;
 			
 			if (maximum_tree_depth_searched < count) {
 				maximum_tree_depth_searched = count;
@@ -137,18 +141,22 @@ public class SEARCH_MULTIPLE {
 
 			if (!(maze[x - 1][y] == '%' || isVisited[x - 1][y])) {
 				fifo.add(new POINT(x - 1, y, count + 1));
+				isVisited[x-1][y] = true;
 			}
 			
 			if (!(maze[x][y - 1] == '%' || isVisited[x][y - 1])) {
 				fifo.add(new POINT(x, y - 1, count + 1));
+				isVisited[x][y-1] = true;
 			}
 			
 			if (!(maze[x][y + 1] == '%' || isVisited[x][y + 1])) {
 				fifo.add(new POINT(x, y + 1, count + 1));
+				isVisited[x][y+1] = true;
 			}
 			
 			if (!(maze[x + 1][y] == '%' || isVisited[x + 1][y])) {
 				fifo.add(new POINT(x + 1, y, count + 1));
+				isVisited[x+1][y] = true;
 			}
 		}
 		

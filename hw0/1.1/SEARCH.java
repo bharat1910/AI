@@ -77,11 +77,11 @@ public class SEARCH {
 		@SuppressWarnings("rawtypes")
 		Stack lifo = new Stack();
 		lifo.add(new POINT(starti, startj, 0));
+		isVisited[starti][startj] = true;
 		
 		while (!lifo.empty()) {
 			POINT top = (POINT) lifo.pop();
 			int x = top.x, y = top.y, count = top.count;
-			isVisited[x][y] = true;
 			
 			number_nodes_expanded++;
 			if (maximum_tree_depth_searched < count) {
@@ -102,18 +102,22 @@ public class SEARCH {
 			}
 			
 			if (!(maze[x - 1][y] == '%' || isVisited[x - 1][y])) {
+				isVisited[x-1][y] = true;
 				lifo.push(new POINT(x - 1, y, count + 1));
 			}
 			
 			if (!(maze[x][y - 1] == '%' || isVisited[x][y - 1])) {
+				isVisited[x][y-1] = true;
 				lifo.push(new POINT(x, y - 1, count + 1));
 			}
 			
 			if (!(maze[x][y + 1] == '%' || isVisited[x][y + 1])) {
+				isVisited[x][y+1] = true;
 				lifo.push(new POINT(x, y + 1, count + 1));
 			}
 			
 			if (!(maze[x + 1][y] == '%' || isVisited[x + 1][y])) {
+				isVisited[x+1][y] = true;
 				lifo.push(new POINT(x + 1, y, count + 1));
 			}
 		}
@@ -134,11 +138,11 @@ public class SEARCH {
 		
 		Queue<POINT> fifo = new LinkedList<>();
 		fifo.add(new POINT(starti, startj, 0));
+		isVisited[starti][startj] = true;
 		
 		while (!fifo.isEmpty()) {
 			POINT top = (POINT) fifo.remove();
 			int x = top.x, y = top.y, count = top.count;
-			isVisited[x][y] = true;
 			
 			number_nodes_expanded++;
 			if (maximum_tree_depth_searched < count) {
@@ -159,18 +163,22 @@ public class SEARCH {
 			}
 			
 			if (!(maze[x - 1][y] == '%' || isVisited[x - 1][y])) {
+				isVisited[x - 1][y] = true;
 				fifo.add(new POINT(x - 1, y, count + 1));
 			}
 			
 			if (!(maze[x][y - 1] == '%' || isVisited[x][y - 1])) {
+				isVisited[x][y-1] = true;
 				fifo.add(new POINT(x, y - 1, count + 1));
 			}
 			
 			if (!(maze[x][y + 1] == '%' || isVisited[x][y + 1])) {
+				isVisited[x][y+1] = true;
 				fifo.add(new POINT(x, y + 1, count + 1));
 			}
 			
 			if (!(maze[x + 1][y] == '%' || isVisited[x + 1][y])) {
+				isVisited[x + 1][y] = true;
 				fifo.add(new POINT(x + 1, y, count + 1));
 			}
 		}
@@ -191,12 +199,12 @@ public class SEARCH {
 
 		Queue<POINT> queue = new PriorityQueue<>();
 		queue.add(new POINT(starti, startj, 0, Math.abs(endi - starti) + Math.abs(endj - startj)));
+		isVisited[starti][startj] = true;
 		
 		while (!queue.isEmpty()) {
 			POINT top = queue.remove();
 			
 			int x = top.x, y = top.y, count = top.count;
-			isVisited[x][y] = true;
 			
 			number_nodes_expanded++;
 			if (maximum_tree_depth_searched < count) {
@@ -217,18 +225,22 @@ public class SEARCH {
 			}
 			
 			if (!(maze[x - 1][y] == '%' || isVisited[x - 1][y])) {
+				isVisited[x-1][y] = true;
 				queue.add(new POINT(x - 1, y, count + 1, Math.abs(endi - x + 1) + Math.abs(endj - y)));
 			}
 			
 			if (!(maze[x][y - 1] == '%' || isVisited[x][y - 1])) {
+				isVisited[x][y-1] = true;
 				queue.add(new POINT(x, y - 1, count + 1, Math.abs(endi - x) + Math.abs(endj - y + 1)));
 			}
 			
 			if (!(maze[x][y + 1] == '%' || isVisited[x][y + 1])) {
+				isVisited[x][y+1] = true;
 				queue.add(new POINT(x, y + 1, count + 1, Math.abs(endi - x) + Math.abs(endj - y - 1)));
 			}
 			
 			if (!(maze[x + 1][y] == '%' || isVisited[x + 1][y])) {
+				isVisited[x+1][y] = true;
 				queue.add(new POINT(x + 1, y, count + 1, Math.abs(endi - x - 1) + Math.abs(endj - y)));
 			}
 		}
@@ -249,12 +261,12 @@ public class SEARCH {
 
 		Queue<POINT> queue = new PriorityQueue<>();
 		queue.add(new POINT(starti, startj, 0, Math.abs(endi - starti) + Math.abs(endj - startj)));
+		isVisited[starti][startj] = true;
 		
 		while (!queue.isEmpty()) {
 			POINT top = queue.remove();
 			
 			int x = top.x, y = top.y, count = top.count;
-			isVisited[x][y] = true;
 			
 			number_nodes_expanded++;
 			if (maximum_tree_depth_searched < count) {
@@ -275,18 +287,22 @@ public class SEARCH {
 			}
 			
 			if (!(maze[x - 1][y] == '%' || isVisited[x - 1][y])) {
+				isVisited[x-1][y] = true;
 				queue.add(new POINT(x - 1, y, count + 1, count + 1 + Math.abs(endi - x + 1) + Math.abs(endj - y)));
 			}
 			
 			if (!(maze[x][y - 1] == '%' || isVisited[x][y - 1])) {
+				isVisited[x][y-1] = true;
 				queue.add(new POINT(x, y - 1, count + 1, count + 1 + Math.abs(endi - x) + Math.abs(endj - y + 1)));
 			}
 			
 			if (!(maze[x][y + 1] == '%' || isVisited[x][y + 1])) {
+				isVisited[x][y+1] = true;
 				queue.add(new POINT(x, y + 1, count + 1, count + 1 + Math.abs(endi - x) + Math.abs(endj - y - 1)));
 			}
 			
 			if (!(maze[x + 1][y] == '%' || isVisited[x + 1][y])) {
+				isVisited[x+1][y] = true;
 				queue.add(new POINT(x + 1, y, count + 1, count + 1 + Math.abs(endi - x - 1) + Math.abs(endj - y)));
 			}
 		}
