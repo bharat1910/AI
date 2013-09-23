@@ -7,7 +7,8 @@ import java.util.Queue;
 public class UCS {
 	
 	char[][] maze = new char[100][100];
-	int starti, startj, endi, endj;
+	int starti, startj, endi, endj, maxx, maxy;
+	int[] MAZE_STEPS = {-1, 0, 1};
 	
 	private class POINT implements Comparable<POINT> {
 		int x;
@@ -36,6 +37,7 @@ public class UCS {
 		int count = 0;
 		
 		while ((line = reader.readLine()) != null) {
+			maxy = line.length();
 			for (int i=0; i<line.length(); i++) {
 				maze[count][i] = line.charAt(i);
 				
@@ -51,11 +53,23 @@ public class UCS {
 			}
 			count++;
 		}
-		
+		maxx = count;
 		UCSC12();
 		UCSC2();
 	}
 
+	private boolean isValid(int x, int y, boolean[][] isVisited)
+	{
+		if (maze[x][y] == '%' || isVisited[x][y])
+		{
+			return false;
+		}
+		else {
+			isVisited[x][y] = true;
+			return true;
+		}
+	}
+	
 	private void UCSC12()
 	{
 		boolean[][] isVisited = new boolean[100][100];
@@ -72,7 +86,7 @@ public class UCS {
 			int x = top.x, y = top.y, count = top.count;
 			double cost = top.cost;
 			isVisited[x][y] = true;
-			
+
 			if (maximum_tree_depth_searched < count) {
 				maximum_tree_depth_searched = count;
 			}
@@ -81,21 +95,18 @@ public class UCS {
 				break;
 			}
 			number_nodes_expanded++;
-			
-			if (!(maze[x - 1][y] == '%' || isVisited[x - 1][y])) {
-				queue.add(new POINT(x - 1, y, count + 1, cost + Math.pow(0.5, x-1)));
-			}
-			
-			if (!(maze[x][y - 1] == '%' || isVisited[x][y - 1])) {
-				queue.add(new POINT(x, y - 1, count + 1, cost + Math.pow(0.5, x)));
-			}
-			
-			if (!(maze[x][y + 1] == '%' || isVisited[x][y + 1])) {
-				queue.add(new POINT(x, y + 1, count + 1, cost + Math.pow(0.5, x)));
-			}
-			
-			if (!(maze[x + 1][y] == '%' || isVisited[x + 1][y])) {
-				queue.add(new POINT(x + 1, y, count + 1, cost + Math.pow(0.5, x+1)));
+	
+			for (int i : MAZE_STEPS) {
+				for (int j : MAZE_STEPS) {
+					if (Math.abs(i) != Math.abs(j) &&
+						x + i >= 0 && x + i < maxx &&
+						y + j >= 0 && y + j < maxy)
+					{
+						if (isValid(x + i, y + j, isVisited)) {
+							queue.add(new POINT(x + i, y + j, count + 1, cost + Math.pow(0.5, x+i)));
+						}
+					}
+				}
 			}
 		}
 		
@@ -132,21 +143,18 @@ public class UCS {
 			}
 			number_nodes_expanded++;
 			
-			if (!(maze[x - 1][y] == '%' || isVisited[x - 1][y])) {
-				queue.add(new POINT(x - 1, y, count + 1, cost + Math.pow(2, x-1)));
-			}
-			
-			if (!(maze[x][y - 1] == '%' || isVisited[x][y - 1])) {
-				queue.add(new POINT(x, y - 1, count + 1, cost + Math.pow(2, x)));
-			}
-			
-			if (!(maze[x][y + 1] == '%' || isVisited[x][y + 1])) {
-				queue.add(new POINT(x, y + 1, count + 1, cost + Math.pow(2, x)));
-			}
-			
-			if (!(maze[x + 1][y] == '%' || isVisited[x + 1][y])) {
-				queue.add(new POINT(x + 1, y, count + 1, cost + Math.pow(2, x+1)));
-			}
+			for (int i : MAZE_STEPS) {
+				for (int j : MAZE_STEPS) {
+					if (Math.abs(i) != Math.abs(j) &&
+						x + i >= 0 && x + i < maxx &&
+						y + j >= 0 && y + j < maxy)
+					{
+						if (isValid(x + i, y + j, isVisited)) {
+							queue.add(new POINT(x + i, y + j, count + 1, cost + Math.pow(2, x+i)));
+						}
+					}
+				}
+			}			
 		}
 		
 		System.out.println("Uniform cost search cost 2^x");

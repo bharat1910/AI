@@ -10,7 +10,7 @@ public class SEARCH {
 	
 	char[][] maze = new char[100][100];
 	int starti, startj, endi, endj, maxx, maxy;
-	int[] KNIGHT_STEPS = {-1, 0, 1};
+	int[] MAZE_STEPS = {-1, 0, 1};
 	
 	private class POINT implements Comparable<POINT> {
 		int x;
@@ -83,8 +83,8 @@ public class SEARCH {
 	
 	private boolean checkKnightStepsForGoal(int x, int y)
 	{
-		for (int i : KNIGHT_STEPS) {
-			for (int j : KNIGHT_STEPS) {
+		for (int i : MAZE_STEPS) {
+			for (int j : MAZE_STEPS) {
 				if (Math.abs(i) != Math.abs(j) &&
 					x+i >= 0 && x+i < maxx &&
 					y+j >= 0 && y+j < maxy)
@@ -129,8 +129,8 @@ public class SEARCH {
 				break;
 			}
 			
-			for (int i : KNIGHT_STEPS) {
-				for (int j : KNIGHT_STEPS) {
+			for (int i : MAZE_STEPS) {
+				for (int j : MAZE_STEPS) {
 					if (Math.abs(i) != Math.abs(j) &&
 						x + i >= 0 && x + i < maxx &&
 						y + j >= 0 && y + j < maxy)
@@ -180,8 +180,8 @@ public class SEARCH {
 				break;
 			}
 			
-			for (int i : KNIGHT_STEPS) {
-				for (int j : KNIGHT_STEPS) {
+			for (int i : MAZE_STEPS) {
+				for (int j : MAZE_STEPS) {
 					if (Math.abs(i) != Math.abs(j) &&
 						x + i >= 0 && x + i < maxx &&
 						y + j >= 0 && y + j < maxy)
@@ -232,8 +232,8 @@ public class SEARCH {
 				break;
 			}
 			
-			for (int i : KNIGHT_STEPS) {
-				for (int j : KNIGHT_STEPS) {
+			for (int i : MAZE_STEPS) {
+				for (int j : MAZE_STEPS) {
 					if (Math.abs(i) != Math.abs(j) &&
 						x + i >= 0 && x + i < maxx &&
 						y + j >= 0 && y + j < maxy)
@@ -285,8 +285,8 @@ public class SEARCH {
 				break;
 			}
 			
-			for (int i : KNIGHT_STEPS) {
-				for (int j : KNIGHT_STEPS) {
+			for (int i : MAZE_STEPS) {
+				for (int j : MAZE_STEPS) {
 					if (Math.abs(i) != Math.abs(j) &&
 						x + i >= 0 && x + i < maxx &&
 						y + j >= 0 && y + j < maxy)
