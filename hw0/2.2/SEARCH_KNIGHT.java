@@ -40,7 +40,7 @@ public class SEARCH_KNIGHT {
 	public void run() throws IOException
 	{
 		@SuppressWarnings("resource")
-		BufferedReader reader = new BufferedReader(new FileReader("hw0/1.1/maze_small.txt"));
+		BufferedReader reader = new BufferedReader(new FileReader("hw0/2.2/maze.txt"));
 		String line = null;
 		int count = 0;
 		
@@ -49,7 +49,7 @@ public class SEARCH_KNIGHT {
 			for (int i=0; i<line.length(); i++) {
 				maze[count][i] = line.charAt(i);
 				
-				if (maze[count][i] == 'P') {
+				if (maze[count][i] == 'K') {
 					starti = count;
 					startj = i;
 				}
