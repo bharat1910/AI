@@ -81,22 +81,6 @@ public class SEARCH {
 		}
 	}
 	
-	private boolean checkKnightStepsForGoal(int x, int y)
-	{
-		for (int i : MAZE_STEPS) {
-			for (int j : MAZE_STEPS) {
-				if (Math.abs(i) != Math.abs(j) &&
-					x+i >= 0 && x+i < maxx &&
-					y+j >= 0 && y+j < maxy)
-				{
-					if (maze[x + i][y + j] == '.') return true;
-				}
-			}
-		}
-		
-		return false;
-	}
-	
 	@SuppressWarnings("unchecked")
 	private void DFS()
 	{
@@ -114,20 +98,14 @@ public class SEARCH {
 			POINT top = (POINT) lifo.pop();
 			int x = top.x, y = top.y, count = top.count;
 			
-			number_nodes_expanded++;
 			if (maximum_tree_depth_searched < count) {
 				maximum_tree_depth_searched = count;
 			}
-			
-			if (checkKnightStepsForGoal(x, y))
-			{
-				count++;
+			if (maze[x][y] == '.') {
 				path_cost = count;
-				if (maximum_tree_depth_searched < count) {
-					maximum_tree_depth_searched = count;
-				}
 				break;
 			}
+			number_nodes_expanded++;
 			
 			for (int i : MAZE_STEPS) {
 				for (int j : MAZE_STEPS) {
@@ -165,20 +143,14 @@ public class SEARCH {
 			POINT top = (POINT) fifo.remove();
 			int x = top.x, y = top.y, count = top.count;
 			
-			number_nodes_expanded++;
 			if (maximum_tree_depth_searched < count) {
 				maximum_tree_depth_searched = count;
 			}
-			
-			if (checkKnightStepsForGoal(x, y))
-			{
-				count++;
+			if (maze[x][y] == '.') {
 				path_cost = count;
-				if (maximum_tree_depth_searched < count) {
-					maximum_tree_depth_searched = count;
-				}
 				break;
 			}
+			number_nodes_expanded++;
 			
 			for (int i : MAZE_STEPS) {
 				for (int j : MAZE_STEPS) {
@@ -217,20 +189,14 @@ public class SEARCH {
 			
 			int x = top.x, y = top.y, count = top.count;
 			
-			number_nodes_expanded++;
 			if (maximum_tree_depth_searched < count) {
 				maximum_tree_depth_searched = count;
 			}
-			
-			if (checkKnightStepsForGoal(x, y))
-			{
-				count++;
+			if (maze[x][y] == '.') {
 				path_cost = count;
-				if (maximum_tree_depth_searched < count) {
-					maximum_tree_depth_searched = count;
-				}
 				break;
 			}
+			number_nodes_expanded++;
 			
 			for (int i : MAZE_STEPS) {
 				for (int j : MAZE_STEPS) {
@@ -270,20 +236,14 @@ public class SEARCH {
 			
 			int x = top.x, y = top.y, count = top.count;
 			
-			number_nodes_expanded++;
 			if (maximum_tree_depth_searched < count) {
 				maximum_tree_depth_searched = count;
 			}
-			
-			if (checkKnightStepsForGoal(x, y))
-			{
-				count++;
+			if (maze[x][y] == '.') {
 				path_cost = count;
-				if (maximum_tree_depth_searched < count) {
-					maximum_tree_depth_searched = count;
-				}
 				break;
 			}
+			number_nodes_expanded++;
 			
 			for (int i : MAZE_STEPS) {
 				for (int j : MAZE_STEPS) {
