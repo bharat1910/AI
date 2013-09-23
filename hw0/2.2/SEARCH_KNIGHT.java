@@ -6,11 +6,11 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Stack;
 
-public class SEARCH {
+public class SEARCH_KNIGHT {
 	
 	char[][] maze = new char[100][100];
 	int starti, startj, endi, endj, maxx, maxy;
-	int[] KNIGHT_STEPS = {-1, 0, 1};
+	int[] KNIGHT_STEPS = {-2, -1, 1, 2};
 	
 	private class POINT implements Comparable<POINT> {
 		int x;
@@ -310,7 +310,7 @@ public class SEARCH {
 	
 	public static void main(String[] args) throws IOException
 	{
-		SEARCH main = new SEARCH();
+		SEARCH_KNIGHT main = new SEARCH_KNIGHT();
 		main.run();
 		System.exit(0);
 	}
