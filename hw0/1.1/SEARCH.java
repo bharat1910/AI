@@ -44,7 +44,7 @@ public class SEARCH {
 		String line = null;
 		int count = 0;
 		
-		while ((line = reader.readLine()) != null) {
+		while ((line = reader.readLine()) != null && !line.equals("")) {
 			maxy = line.length();
 			for (int i=0; i<line.length(); i++) {
 				maze[count][i] = line.charAt(i);
