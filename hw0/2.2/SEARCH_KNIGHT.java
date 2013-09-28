@@ -44,7 +44,7 @@ public class SEARCH_KNIGHT {
 		String line = null;
 		int count = 0;
 		
-		while ((line = reader.readLine()) != null) {
+		while ((line = reader.readLine()) != null && !line.equals("")) {
 			maxy = line.length();
 			for (int i=0; i<line.length(); i++) {
 				maze[count][i] = line.charAt(i);
@@ -205,8 +205,8 @@ public class SEARCH_KNIGHT {
 						y + j >= 0 && y + j < maxy)
 					{
 						if (isValid(x + i, y + j, isVisited)) {
-							queue.add(new POINT(x + i, y + j, count + 1, Math
-								.abs(endi - x - i) + Math.abs(endj - y - j)));
+							queue.add(new POINT(x + i, y + j, count + 1, 
+								(Math.abs(endi - x - i) > Math.abs(endj - y - j) ? Math.abs(endi - x - i)/2 : Math.abs(endj - y - j)/2)));
 						}
 					}
 				}
@@ -252,9 +252,8 @@ public class SEARCH_KNIGHT {
 						y + j >= 0 && y + j < maxy)
 					{
 						if (isValid(x + i, y + j, isVisited)) {
-							queue.add(new POINT(x + i, y + j, count + 1, count + 1
-									+ Math.abs(endi - x - i)
-									+ Math.abs(endj - y - j)));
+							queue.add(new POINT(x + i, y + j, count + 1, count + 1 + 
+								(Math.abs(endi - x - i) > Math.abs(endj - y - j) ? Math.abs(endi - x - i)/2 : Math.abs(endj - y - j)/2)));
 						}
 					}
 				}
