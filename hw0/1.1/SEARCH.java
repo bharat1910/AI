@@ -17,7 +17,7 @@ public class SEARCH {
 	int starti, startj, endi, endj, maxx, maxy;
 	int[] MAZE_STEPS = {-1, 0, 1};
 	String FOLDER = "hw0/1.1/input_files/";
-	String FILE = "maze_small";
+	String FILE = "maze_open";
 	String RESULT = "hw0/1.1/results/";
 	
 	private class POINT implements Comparable<POINT> {
