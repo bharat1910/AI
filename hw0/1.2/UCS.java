@@ -1,12 +1,14 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
 public class UCS {
 	
 	char[][] maze = new char[100][100];
+	char[][] mazeModified;
 	int starti, startj, endi, endj, maxx, maxy;
 	int[] MAZE_STEPS = {-1, 0, 1};
 	
@@ -29,7 +31,7 @@ public class UCS {
 		}
 	}
 	
-	public void run() throws IOException
+	public void run() throws IOException, InterruptedException
 	{
 		@SuppressWarnings("resource")
 		BufferedReader reader = new BufferedReader(new FileReader("hw0/1.2/maze_medium.txt"));
@@ -70,7 +72,37 @@ public class UCS {
 		}
 	}
 	
-	private void UCSC12()
+	private void deepCopyMaze()
+	{
+		mazeModified = new char[100][100];
+		for (int i=0; i<maze.length; i++) {
+			for (int j=0; j<maze[0].length; j++) {
+				mazeModified[i][j] = maze[i][j];
+			}
+		}
+	}
+	
+	private void printMaze(char[][] m)
+	{
+		for (int i=0; i<maxx; i++) {
+			for (int j=0; j<maxy; j++) {
+				System.out.print(m[i][j]);
+			}
+			System.out.println();
+		}
+		System.out.println();
+	}
+	
+	private void clrscr()
+	{
+		char c = '\n';
+		int length = 20;
+		char[] chars = new char[length];
+		Arrays.fill(chars, c);
+		System.out.print(String.valueOf(chars));
+	}
+	
+	private void UCSC12() throws InterruptedException
 	{
 		boolean[][] isVisited = new boolean[100][100];
 		int number_nodes_expanded = 0;
@@ -78,6 +110,8 @@ public class UCS {
 		double path_cost = 0;
 		int maximum_size_frontier = 0;
 
+		deepCopyMaze();
+		
 		Queue<POINT> queue = new PriorityQueue<>();
 		queue.add(new POINT(starti, startj, 0, 0));
 		
@@ -100,6 +134,11 @@ public class UCS {
 				break;
 			}
 			number_nodes_expanded++;
+			
+			mazeModified[x][y] = '.';
+			clrscr();
+			printMaze(mazeModified);
+			Thread.sleep(300);
 	
 			for (int i : MAZE_STEPS) {
 				for (int j : MAZE_STEPS) {
@@ -123,7 +162,7 @@ public class UCS {
 		System.out.println("---------------------------------------------------------");	
 	}
 	
-	private void UCSC2()
+	private void UCSC2() throws InterruptedException
 	{
 		boolean[][] isVisited = new boolean[100][100];
 		int number_nodes_expanded = 0;
@@ -131,6 +170,8 @@ public class UCS {
 		double path_cost = 0;
 		int maximum_size_frontier = 0;
 
+		deepCopyMaze();
+		
 		Queue<POINT> queue = new PriorityQueue<>();
 		queue.add(new POINT(starti, startj, 0, 0));
 		
@@ -154,6 +195,11 @@ public class UCS {
 			}
 			number_nodes_expanded++;
 			
+			mazeModified[x][y] = '.';
+			clrscr();
+			printMaze(mazeModified);
+			Thread.sleep(300);
+			
 			for (int i : MAZE_STEPS) {
 				for (int j : MAZE_STEPS) {
 					if (Math.abs(i) != Math.abs(j) &&
@@ -176,7 +222,7 @@ public class UCS {
 		System.out.println("---------------------------------------------------------");	
 	}
 	
-	public static void main(String[] args) throws IOException
+	public static void main(String[] args) throws IOException, InterruptedException
 	{
 		UCS main = new UCS();
 		main.run();
