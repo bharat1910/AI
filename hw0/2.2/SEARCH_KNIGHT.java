@@ -13,7 +13,9 @@ public class SEARCH_KNIGHT {
 	char[][] mazeModified;
 	int starti, startj, endi, endj, maxx, maxy;
 	int[] KNIGHT_STEPS = {-2, -1, 1, 2};
-	String FILE_TO_RUN = "hw0/2.2/maze.txt";
+	String FOLDER = "hw0/2.2/input_files/";
+	String FILE = "maze";
+	String RESULT = "hw0/2.2/results/";
 	
 	private class POINT implements Comparable<POINT> {
 		int x;
@@ -43,7 +45,7 @@ public class SEARCH_KNIGHT {
 	public void run() throws IOException, InterruptedException
 	{
 		@SuppressWarnings("resource")
-		BufferedReader reader = new BufferedReader(new FileReader(FILE_TO_RUN));
+		BufferedReader reader = new BufferedReader(new FileReader(FOLDER + FILE + ".txt"));
 		String line = null;
 		int count = 0;
 		

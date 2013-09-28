@@ -13,7 +13,9 @@ public class SEARCH {
 	char[][] mazeModified;
 	int starti, startj, endi, endj, maxx, maxy;
 	int[] MAZE_STEPS = {-1, 0, 1};
-	String FILE_TO_RUN = "hw0/1.1/maze_small.txt";
+	String FOLDER = "hw0/1.1/input_files/";
+	String FILE = "maze_small";
+	String RESULT = "hw0/1.1/results/";
 	
 	private class POINT implements Comparable<POINT> {
 		int x;
@@ -43,7 +45,7 @@ public class SEARCH {
 	public void run() throws IOException, InterruptedException
 	{
 		@SuppressWarnings("resource")
-		BufferedReader reader = new BufferedReader(new FileReader(FILE_TO_RUN));
+		BufferedReader reader = new BufferedReader(new FileReader(FOLDER + FILE + ".txt"));
 		String line = null;
 		int count = 0;
 		
