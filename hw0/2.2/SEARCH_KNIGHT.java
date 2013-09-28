@@ -96,6 +96,10 @@ public class SEARCH_KNIGHT {
 		isVisited[starti][startj] = true;
 		
 		while (!lifo.empty()) {
+			if (lifo.size() > maximum_size_frontier) { 
+				maximum_size_frontier = lifo.size();
+			}
+			
 			POINT top = (POINT) lifo.pop();
 			int x = top.x, y = top.y, count = top.count;
 			
