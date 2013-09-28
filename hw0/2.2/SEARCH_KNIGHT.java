@@ -88,6 +88,7 @@ public class SEARCH_KNIGHT {
 		int number_nodes_expanded = 0;
 		int maximum_tree_depth_searched = 0;
 		int path_cost = 0;
+		int maximum_size_frontier = 0;
 		
 		@SuppressWarnings("rawtypes")
 		Stack lifo = new Stack();
@@ -125,6 +126,7 @@ public class SEARCH_KNIGHT {
 		System.out.println("Path cost : " + path_cost);
 		System.out.println("Number of nodes expanded : " + number_nodes_expanded);
 		System.out.println("Maximum Tree Depth Searched " + maximum_tree_depth_searched);
+		System.out.println("Maximum size of the frontier " + maximum_size_frontier);
 		System.out.println("---------------------------------------------------------");
 	}
 	
@@ -134,12 +136,17 @@ public class SEARCH_KNIGHT {
 		int number_nodes_expanded = 0;
 		int maximum_tree_depth_searched = 0;
 		int path_cost = 0;
+		int maximum_size_frontier = 0;
 		
 		Queue<POINT> fifo = new LinkedList<>();
 		fifo.add(new POINT(starti, startj, 0));
 		isVisited[starti][startj] = true;
 		
 		while (!fifo.isEmpty()) {
+			if (fifo.size() > maximum_size_frontier) { 
+				maximum_size_frontier = fifo.size();
+			}
+			
 			POINT top = (POINT) fifo.remove();
 			int x = top.x, y = top.y, count = top.count;
 			
@@ -170,6 +177,7 @@ public class SEARCH_KNIGHT {
 		System.out.println("Path cost : " + path_cost);
 		System.out.println("Number of nodes expanded : " + number_nodes_expanded);
 		System.out.println("Maximum Tree Depth Searched " + maximum_tree_depth_searched);
+		System.out.println("Maximum size of the frontier " + maximum_size_frontier);
 		System.out.println("---------------------------------------------------------");	
 	}
 
@@ -179,12 +187,17 @@ public class SEARCH_KNIGHT {
 		int number_nodes_expanded = 0;
 		int maximum_tree_depth_searched = 0;
 		int path_cost = 0;
+		int maximum_size_frontier = 0;
 
 		Queue<POINT> queue = new PriorityQueue<>();
 		queue.add(new POINT(starti, startj, 0, Math.abs(endi - starti) + Math.abs(endj - startj)));
 		isVisited[starti][startj] = true;
 		
 		while (!queue.isEmpty()) {
+			if (queue.size() > maximum_size_frontier) { 
+				maximum_size_frontier = queue.size();
+			}
+			
 			POINT top = queue.remove();
 			
 			int x = top.x, y = top.y, count = top.count;
@@ -217,6 +230,7 @@ public class SEARCH_KNIGHT {
 		System.out.println("Path cost : " + path_cost);
 		System.out.println("Number of nodes expanded : " + number_nodes_expanded);
 		System.out.println("Maximum Tree Depth Searched " + maximum_tree_depth_searched);
+		System.out.println("Maximum size of the frontier " + maximum_size_frontier);
 		System.out.println("---------------------------------------------------------");	
 	}
 
@@ -226,12 +240,17 @@ public class SEARCH_KNIGHT {
 		int number_nodes_expanded = 0;
 		int maximum_tree_depth_searched = 0;
 		int path_cost = 0;
+		int maximum_size_frontier = 0;
 
 		Queue<POINT> queue = new PriorityQueue<>();
 		queue.add(new POINT(starti, startj, 0, Math.abs(endi - starti) + Math.abs(endj - startj)));
 		isVisited[starti][startj] = true;
 		
 		while (!queue.isEmpty()) {
+			if (queue.size() > maximum_size_frontier) { 
+				maximum_size_frontier = queue.size();
+			}
+			
 			POINT top = queue.remove();
 			
 			int x = top.x, y = top.y, count = top.count;
@@ -264,6 +283,7 @@ public class SEARCH_KNIGHT {
 		System.out.println("Path cost : " + path_cost);
 		System.out.println("Number of nodes expanded : " + number_nodes_expanded);
 		System.out.println("Maximum Tree Depth Searched " + maximum_tree_depth_searched);
+		System.out.println("Maximum size of the frontier " + maximum_size_frontier);
 		System.out.println("---------------------------------------------------------");	
 	}
 	

@@ -76,11 +76,16 @@ public class UCS {
 		int number_nodes_expanded = 0;
 		int maximum_tree_depth_searched = 0;
 		double path_cost = 0;
+		int maximum_size_frontier = 0;
 
 		Queue<POINT> queue = new PriorityQueue<>();
 		queue.add(new POINT(starti, startj, 0, 0));
 		
 		while (!queue.isEmpty()) {
+			if (queue.size() > maximum_size_frontier) { 
+				maximum_size_frontier = queue.size();
+			}
+			
 			POINT top = queue.remove();
 			
 			int x = top.x, y = top.y, count = top.count;
@@ -114,6 +119,7 @@ public class UCS {
 		System.out.println("Path cost : " + path_cost);
 		System.out.println("Number of nodes expanded : " + number_nodes_expanded);
 		System.out.println("Maximum Tree Depth Searched " + maximum_tree_depth_searched);
+		System.out.println("Maximum size of the frontier " + maximum_size_frontier);
 		System.out.println("---------------------------------------------------------");	
 	}
 	
@@ -123,11 +129,16 @@ public class UCS {
 		int number_nodes_expanded = 0;
 		int maximum_tree_depth_searched = 0;
 		double path_cost = 0;
+		int maximum_size_frontier = 0;
 
 		Queue<POINT> queue = new PriorityQueue<>();
 		queue.add(new POINT(starti, startj, 0, 0));
 		
 		while (!queue.isEmpty()) {
+			if (queue.size() > maximum_size_frontier) { 
+				maximum_size_frontier = queue.size();
+			}
+			
 			POINT top = queue.remove();
 			
 			int x = top.x, y = top.y, count = top.count;
@@ -161,6 +172,7 @@ public class UCS {
 		System.out.println("Path cost : " + path_cost);
 		System.out.println("Number of nodes expanded : " + number_nodes_expanded);
 		System.out.println("Maximum Tree Depth Searched " + maximum_tree_depth_searched);
+		System.out.println("Maximum size of the frontier " + maximum_size_frontier);
 		System.out.println("---------------------------------------------------------");	
 	}
 	
