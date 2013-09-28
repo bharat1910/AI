@@ -11,6 +11,7 @@ public class UCS {
 	char[][] mazeModified;
 	int starti, startj, endi, endj, maxx, maxy;
 	int[] MAZE_STEPS = {-1, 0, 1};
+	String FILE_TO_RUN = "hw0/1.2/maze_medium.txt";
 	
 	private class POINT implements Comparable<POINT> {
 		int x;
@@ -34,7 +35,7 @@ public class UCS {
 	public void run() throws IOException, InterruptedException
 	{
 		@SuppressWarnings("resource")
-		BufferedReader reader = new BufferedReader(new FileReader("hw0/1.2/maze_medium.txt"));
+		BufferedReader reader = new BufferedReader(new FileReader(FILE_TO_RUN));
 		String line = null;
 		int count = 0;
 		
