@@ -1,6 +1,9 @@
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -105,7 +108,19 @@ public class UCS {
 		System.out.print(String.valueOf(chars));
 	}
 	
-	private void UCSC12() throws InterruptedException
+	private void writeToFile(String s) throws FileNotFoundException, UnsupportedEncodingException
+	{
+		PrintWriter writer = new PrintWriter(RESULT + FILE + "_" + s + ".txt", "UTF-8");
+		for (int i=0; i<maxx; i++) {
+			for (int j=0;j<maxy; j++) {
+				writer.print(mazeModified[i][j]);
+			}
+			writer.println();
+		}
+		writer.close();
+	}
+	
+	private void UCSC12() throws InterruptedException, FileNotFoundException, UnsupportedEncodingException
 	{
 		boolean[][] isVisited = new boolean[100][100];
 		int number_nodes_expanded = 0;
@@ -139,9 +154,9 @@ public class UCS {
 			number_nodes_expanded++;
 			
 			mazeModified[x][y] = '.';
-			clrscr();
-			printMaze(mazeModified);
-			Thread.sleep(300);
+			//clrscr();
+			//printMaze(mazeModified);
+			//Thread.sleep(300);
 	
 			for (int i : MAZE_STEPS) {
 				for (int j : MAZE_STEPS) {
@@ -157,6 +172,8 @@ public class UCS {
 			}
 		}
 		
+		writeToFile("ucsc12");
+		
 		System.out.println("Uniform cost search cost 1/2^x");
 		System.out.println("Path cost : " + path_cost);
 		System.out.println("Number of nodes expanded : " + number_nodes_expanded);
@@ -165,7 +182,7 @@ public class UCS {
 		System.out.println("---------------------------------------------------------");	
 	}
 	
-	private void UCSC2() throws InterruptedException
+	private void UCSC2() throws InterruptedException, FileNotFoundException, UnsupportedEncodingException
 	{
 		boolean[][] isVisited = new boolean[100][100];
 		int number_nodes_expanded = 0;
@@ -199,9 +216,9 @@ public class UCS {
 			number_nodes_expanded++;
 			
 			mazeModified[x][y] = '.';
-			clrscr();
-			printMaze(mazeModified);
-			Thread.sleep(300);
+			//clrscr();
+			//printMaze(mazeModified);
+			//Thread.sleep(300);
 			
 			for (int i : MAZE_STEPS) {
 				for (int j : MAZE_STEPS) {
@@ -216,6 +233,8 @@ public class UCS {
 				}
 			}			
 		}
+		
+		writeToFile("ucsc2");
 		
 		System.out.println("Uniform cost search cost 2^x");
 		System.out.println("Path cost : " + path_cost);

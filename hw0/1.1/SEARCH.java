@@ -1,6 +1,9 @@
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
@@ -116,6 +119,18 @@ public class SEARCH {
 		System.out.print(String.valueOf(chars));
 	}
 	
+	private void writeToFile(String s) throws FileNotFoundException, UnsupportedEncodingException
+	{
+		PrintWriter writer = new PrintWriter(RESULT + FILE + "_" + s + ".txt", "UTF-8");
+		for (int i=0; i<maxx; i++) {
+			for (int j=0;j<maxy; j++) {
+				writer.print(mazeModified[i][j]);
+			}
+			writer.println();
+		}
+		writer.close();
+	}
+	
 	@SuppressWarnings("unchecked")
 	private void DFS() throws InterruptedException, IOException
 	{
@@ -154,9 +169,9 @@ public class SEARCH {
 			number_nodes_expanded++;
 			
 			mazeModified[x][y] = '.';
-			clrscr();
-			printMaze(mazeModified);
-			Thread.sleep(300);
+			//clrscr();
+			//printMaze(mazeModified);
+			//Thread.sleep(300);
 			
 			for (int i : MAZE_STEPS) {
 				for (int j : MAZE_STEPS) {
@@ -172,6 +187,8 @@ public class SEARCH {
 			}
 		}
 		
+		writeToFile("dfs");
+		
 		System.out.println("DFS");
 		System.out.println("Path cost : " + path_cost);
 		System.out.println("Number of nodes expanded : " + number_nodes_expanded);
@@ -180,7 +197,7 @@ public class SEARCH {
 		System.out.println("---------------------------------------------------------");
 	}
 	
-	private void BFS() throws InterruptedException
+	private void BFS() throws InterruptedException, FileNotFoundException, UnsupportedEncodingException
 	{
 		boolean[][] isVisited = new boolean[100][100];
 		int number_nodes_expanded = 0;
@@ -212,9 +229,9 @@ public class SEARCH {
 			number_nodes_expanded++;
 			
 			mazeModified[x][y] = '.';
-			clrscr();
-			printMaze(mazeModified);
-			Thread.sleep(300);
+			//clrscr();
+			//printMaze(mazeModified);
+			//Thread.sleep(300);
 			
 			for (int i : MAZE_STEPS) {
 				for (int j : MAZE_STEPS) {
@@ -230,6 +247,8 @@ public class SEARCH {
 			}
 		}
 		
+		writeToFile("bfs");
+		
 		System.out.println("BFS");
 		System.out.println("Path cost : " + path_cost);
 		System.out.println("Number of nodes expanded : " + number_nodes_expanded);
@@ -238,7 +257,7 @@ public class SEARCH {
 		System.out.println("---------------------------------------------------------");	
 	}
 
-	private void GBF() throws InterruptedException
+	private void GBF() throws InterruptedException, FileNotFoundException, UnsupportedEncodingException
 	{
 		boolean[][] isVisited = new boolean[100][100];
 		int number_nodes_expanded = 0;
@@ -271,9 +290,9 @@ public class SEARCH {
 			number_nodes_expanded++;
 			
 			mazeModified[x][y] = '.';
-			clrscr();
-			printMaze(mazeModified);
-			Thread.sleep(300);
+			//clrscr();
+			//printMaze(mazeModified);
+			//Thread.sleep(300);
 			
 			for (int i : MAZE_STEPS) {
 				for (int j : MAZE_STEPS) {
@@ -290,6 +309,8 @@ public class SEARCH {
 			}
 		}
 		
+		writeToFile("gbf");
+		
 		System.out.println("GBF");
 		System.out.println("Path cost : " + path_cost);
 		System.out.println("Number of nodes expanded : " + number_nodes_expanded);
@@ -298,7 +319,7 @@ public class SEARCH {
 		System.out.println("---------------------------------------------------------");	
 	}
 
-	private void ASTAR() throws InterruptedException
+	private void ASTAR() throws InterruptedException, FileNotFoundException, UnsupportedEncodingException
 	{
 		boolean[][] isVisited = new boolean[100][100];
 		int number_nodes_expanded = 0;
@@ -331,9 +352,9 @@ public class SEARCH {
 			number_nodes_expanded++;
 			
 			mazeModified[x][y] = '.';
-			clrscr();
-			printMaze(mazeModified);
-			Thread.sleep(300);
+			//clrscr();
+			//printMaze(mazeModified);
+			//Thread.sleep(300);
 			
 			for (int i : MAZE_STEPS) {
 				for (int j : MAZE_STEPS) {
@@ -350,6 +371,8 @@ public class SEARCH {
 				}
 			}
 		}
+		
+		writeToFile("astar");
 		
 		System.out.println("A*");
 		System.out.println("Path cost : " + path_cost);
