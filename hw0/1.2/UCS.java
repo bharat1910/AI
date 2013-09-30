@@ -165,7 +165,7 @@ public class UCS {
 						y + j >= 0 && y + j < maxy)
 					{
 						if (isValid(x + i, y + j, isVisited)) {
-							queue.add(new POINT(x + i, y + j, count + 1, cost + Math.pow(0.5, x+i)));
+							queue.add(new POINT(x + i, y + j, count + 1, cost + Math.pow(0.5, y+j)));
 						}
 					}
 				}
@@ -227,7 +227,7 @@ public class UCS {
 						y + j >= 0 && y + j < maxy)
 					{
 						if (isValid(x + i, y + j, isVisited)) {
-							queue.add(new POINT(x + i, y + j, count + 1, cost + Math.pow(2, x+i)));
+							queue.add(new POINT(x + i, y + j, count + 1, cost + Math.pow(2, y+j)));
 						}
 					}
 				}
