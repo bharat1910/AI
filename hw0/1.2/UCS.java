@@ -22,7 +22,7 @@ public class UCS {
 		int x;
 		int y;
 		int count;
-		double cost;
+		Double cost;
 		
 		public POINT(int i, int j, int c, double cst) {
 			x = i;
@@ -33,7 +33,7 @@ public class UCS {
 		
 		@Override
 		public int compareTo(POINT obj) {
-			return cost - obj.cost > 0 ? 1 : 0;
+			return cost.compareTo(obj.cost);
 		}
 	}
 	
