@@ -15,10 +15,12 @@ public class SEARCH_BUG_TRAP {
 	char[][] maze = new char[100][100];
 	char[][] mazeModified;
 	int starti, startj, endi, endj, maxx, maxy;
+	int gloabal_nodes_expanded, global_path_cost, global_tree_depth, global_frontier_size;
 	int[] MAZE_STEPS = {-1, 0, 1};
 	String FOLDER = "hw0/2.1/input_files/";
 	String FILE = "maze_open";
 	String RESULT = "hw0/2.1/results/";
+	boolean print;
 	
 	private class POINT implements Comparable<POINT> {
 		int x;
@@ -51,6 +53,7 @@ public class SEARCH_BUG_TRAP {
 		BufferedReader reader = new BufferedReader(new FileReader(FOLDER + FILE + ".txt"));
 		String line = null;
 		int count = 0;
+		print = true;
 		
 		while ((line = reader.readLine()) != null && !line.equals("")) {
 			maxy = line.length();
@@ -73,6 +76,59 @@ public class SEARCH_BUG_TRAP {
 
 		ASTAR();
 		OURHEURISTIC();
+		
+		gloabal_nodes_expanded = 0;
+		global_path_cost = 0;
+		global_tree_depth = 0;
+		global_frontier_size = 0;
+		int startiLocal = starti;
+		int startjLocal = startj;
+		print = false;
+		
+		char[][] maze_copy = deepCopyAnotherMaze(maze);
+		for (int i=0; i<1000; i++) {
+			maze =  deepCopyAnotherMaze(maze_copy);
+			starti = startiLocal;
+			startj = startjLocal;
+			getAnotherStartPosition();
+			ASTAR();
+		}
+		
+		System.out.println("Average Path cost : " + global_path_cost/1000);
+		System.out.println("Average Number of nodes expanded : " + gloabal_nodes_expanded/1000);
+		System.out.println("Average Maximum tree depth searched " + global_tree_depth/1000);
+		System.out.println("Average Maximum size of the frontier " + global_frontier_size/1000);
+	}
+	
+	private void getAnotherStartPosition()
+	{
+		int moves = (int) (Math.random() * 50);
+		int direction = (int) (Math.random() * 4);
+		int x, y;
+		
+		if (direction == 0) {
+			x = -1; y = 0;
+		}
+		else if (direction == 1) {
+			x = 1; y = 0;
+		}
+		else if (direction == 2) {
+			x = 0; y = -1;
+		}
+		else {
+			x = 0; y = 1;
+		}
+
+		maze[starti][startj] = ' ';
+		for (int i=0; i<moves; i++) {
+			if (maze[starti + x][startj + y] == '%') {
+				break;
+			}
+			starti += x;
+			startj += y;
+		}
+		
+		maze[starti][startj] = 'P';
 	}
 	
 	private void ASTAR() throws InterruptedException, FileNotFoundException, UnsupportedEncodingException
@@ -130,12 +186,22 @@ public class SEARCH_BUG_TRAP {
 		
 		writeToFile("astar");
 		
-		System.out.println("A*");
-		System.out.println("Path cost : " + path_cost);
-		System.out.println("Number of nodes expanded : " + number_nodes_expanded);
-		System.out.println("Maximum tree depth searched " + maximum_tree_depth_searched);
-		System.out.println("Maximum size of the frontier " + maximum_size_frontier);
-		System.out.println("---------------------------------------------------------");	
+		global_path_cost += path_cost;
+		gloabal_nodes_expanded += number_nodes_expanded;
+		global_tree_depth += maximum_tree_depth_searched;
+		global_frontier_size += maximum_size_frontier;
+		
+		if (print) {
+			System.out.println("A*");
+			System.out.println("Path cost : " + path_cost);
+			System.out.println("Number of nodes expanded : "
+					+ number_nodes_expanded);
+			System.out.println("Maximum tree depth searched "
+					+ maximum_tree_depth_searched);
+			System.out.println("Maximum size of the frontier "
+					+ maximum_size_frontier);
+			System.out.println("---------------------------------------------------------");	
+		}
 	}
 	
 	private boolean isValid(int x, int y, boolean[][] isVisited)
@@ -158,6 +224,17 @@ public class SEARCH_BUG_TRAP {
 				mazeModified[i][j] = maze[i][j];
 			}
 		}
+	}
+	
+	private char[][] deepCopyAnotherMaze(char[][] mazeLocal)
+	{
+		char[][] m = new char[100][100];
+		for (int i=0; i<mazeLocal.length; i++) {
+			for (int j=0; j<mazeLocal[0].length; j++) {
+				m[i][j] = mazeLocal[i][j];
+			}
+		}
+		return m;
 	}
 	
 	private void printMaze(char[][] m)
