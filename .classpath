@@ -6,6 +6,7 @@
 	<classpathentry kind="src" path="hw0/1.4"/>
 	<classpathentry kind="src" path="hw0/2.1"/>
 	<classpathentry kind="src" path="hw0/2.2"/>
+	<classpathentry kind="src" path="hw1/1.2"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
