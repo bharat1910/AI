@@ -17,6 +17,7 @@ public class MapColoring
 	
 	public List<POINT> points;
 	public List<SEGMENT> segments;
+	List<List<POINT>> pointConnections;
 	
 	public class POINT implements Comparable {
 		public Double x, y;
@@ -189,6 +190,11 @@ public class MapColoring
 		int random;
 		POINT p;
 		segments = new ArrayList<>();
+		pointConnections = new ArrayList<>();
+		
+		for (int i=0; i<points.size(); i++) {
+			pointConnections.add(new ArrayList<POINT>());
+		}
 		
 		while (true) {
 			random = randomGenerator.nextInt(N_VAL);
@@ -198,6 +204,8 @@ public class MapColoring
 				return;
 			}
 			else {
+				pointConnections.get(random).add(p);
+				pointConnections.get(points.indexOf(p)).add(points.get(random));
 				segments.add(new SEGMENT(points.get(random), p));
 			}
 		}
@@ -231,20 +239,11 @@ public class MapColoring
 		}
 		
 		String str;
-		for (int i=0; i<segments.size(); i++) {
-			if (segments.get(i).p1.equals(points.get(index))) {
-				int j = points.indexOf(segments.get(i).p2);
-				if (!assignment.get(j).equals(' ')) {
-					str = values.get(index).replace(assignment.get(j) + "", "");
-					values.set(index, str);
-				}
-			}
-			else if (segments.get(i).p2.equals(points.get(index))) {
-				int j = points.indexOf(segments.get(i).p1);
-				if (!assignment.get(j).equals(' ')) {
-					str = values.get(index).replace(assignment.get(j) + "", "");
-					values.set(index, str);
-				}
+		for (int i=0; i<pointConnections.get(index).size(); i++) {
+			int j = points.indexOf(pointConnections.get(index).get(i));
+			if (!assignment.get(j).equals(' ')) {
+				str = values.get(index).replace(assignment.get(j) + "", "");
+				values.set(index, str);
 			}
 		}
 		
@@ -271,17 +270,10 @@ public class MapColoring
 		String str;
 		for (int i=0; i<assignment.size(); i++) {
 			if (!assignment.get(i).equals(' ')) {
-				for (int j=0; j<segments.size(); j++) {
-					if (segments.get(j).p1.equals(points.get(i))) {
-						index = points.indexOf(segments.get(j).p2);
-						str = values.get(index).replace(assignment.get(i) + "", "");
-						values.set(index, str);
-					}
-					else if (segments.get(j).p2.equals(points.get(i))) {
-						index = points.indexOf(segments.get(j).p1);
-						str = values.get(index).replace(assignment.get(i) + "", "");
-						values.set(index, str);
-					}
+				for (int j=0; j<pointConnections.get(i).size(); j++) {
+					index = points.indexOf(pointConnections.get(i).get(j));
+					str = values.get(index).replace(assignment.get(i) + "", "");
+					values.set(index, str);
 				}				
 			}
 		}
@@ -291,7 +283,7 @@ public class MapColoring
 	{ 
 		if (count == N_VAL) {
 			for (int i=0; i<points.size(); i++) {
-				//System.out.println(points.get(i).x + " " + points.get(i).y + " " + assignment.get(i));
+				System.out.println(points.get(i).x + " " + points.get(i).y + " " + assignment.get(i));
 			}
 			return true;
 		}
@@ -303,32 +295,30 @@ public class MapColoring
 				return false;
 			}
 			else if (min_val_index > values.get(i).length() && assignment.get(i) == ' ') {
-				index = i;
 				min_val_index = values.get(i).length();
+			}
+		}
+		
+		int conflicts, minimum = Integer.MIN_VALUE;
+		for (int i=0; i<values.size(); i++) {
+			if (min_val_index == values.get(i).length() && assignment.get(i) == ' ') {
+				conflicts = 0;
+				for (POINT p : pointConnections.get(i)) {
+					if (assignment.get(points.indexOf(p)) == ' ') {
+						conflicts++;
+					}
+				}
+
+				if (conflicts > minimum) {
+					minimum = conflicts;
+					index = i;
+				}
 			}
 		}
 //		System.out.println("---------------------------------------");
 //		System.out.println(index);
 //		System.out.println("---------------------------------------");
 //		System.out.println("---------------------------------------");
-
-		String str;
-		for (int i=0; i<segments.size(); i++) {
-			if (segments.get(i).p1.equals(points.get(index))) {
-				int j = points.indexOf(segments.get(i).p2);
-				if (!assignment.get(j).equals(' ')) {
-					str = values.get(index).replace(assignment.get(j) + "", "");
-					values.set(index, str);
-				}
-			}
-			else if (segments.get(i).p2.equals(points.get(index))) {
-				int j = points.indexOf(segments.get(i).p1);
-				if (!assignment.get(j).equals(' ')) {
-					str = values.get(index).replace(assignment.get(j) + "", "");
-					values.set(index, str);
-				}
-			}
-		}
 		
 		List<Character> assignmentCopy = deepCopyAssignment(assignment);
 		for (int i=0; i<values.get(index).length(); i++) {
