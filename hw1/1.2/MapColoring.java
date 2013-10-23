@@ -1,12 +1,15 @@
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
 public class MapColoring
 {
-	public static int N_VAL = 50;
+	public static int N_VAL = 600;
+	List<List<POINT>> distances; 
 	public int asssignmentMadeNormal;
 	public int asssignmentMadeOptimized;
 	
@@ -107,6 +110,36 @@ public class MapColoring
 			y = randomGenerator.nextDouble();
 			points.add(new POINT(x, y));
 		}
+		
+		distances = new ArrayList<>();
+		List<POINT> distanceForPoint;
+		for (int i=0; i<N_VAL; i++) {
+			
+			distanceForPoint = new ArrayList<>();
+			for (int j=0; j<N_VAL; j++) {
+				distanceForPoint.add(points.get(j));
+			}
+			
+			final int i_final = i;
+			Collections.sort(distanceForPoint, new Comparator<POINT>() {
+				@Override
+				public int compare(POINT o1, POINT o2)
+				{
+					return (int) ((getDistance(o1, points.get(i_final)) - getDistance(o2, points.get(i_final))) * 1000.00);
+				}
+			});
+			
+			distances.add(distanceForPoint);
+		}
+	}
+
+	
+	public double getDistance(POINT a, POINT b)
+	{
+		double x1 = a.x - b.x;
+		double y1 = a.y - b.y;
+		
+		return Math.sqrt(x1 * x1 + y1 * y1);
 	}
 	
 	public double getDistance(int i, int j)
@@ -117,12 +150,11 @@ public class MapColoring
 		return Math.sqrt(x1 * x1 + y1 * y1);
 	}
 	
-	public boolean checkValidSegment(int i, int j)
+	public boolean checkValidSegment(POINT p, POINT q)
 	{
-		SEGMENT sdash = new SEGMENT(points.get(i), points.get(j));
+		SEGMENT sdash = new SEGMENT(p, q);
 		
-		for (int k=0; k<segments.size(); k++) {
-			SEGMENT s = segments.get(k);
+		for (SEGMENT s : segments) {
 			if (!s.equals(sdash) && s.shareAnEndPoint(sdash)) {
 				continue;
 			}
@@ -138,39 +170,33 @@ public class MapColoring
 		return true;
 	}
 	
-	public int getValidPoint(int random)
-	{
-		int index = -1;
-		Double dist = Double.MAX_VALUE, temp;
-		
-		for (int i=0; i < points.size(); i++) {
-			if (i != random && checkValidSegment(i, random)) {
-				temp = getDistance(i, random);
-				if (temp < dist) {
-					dist = temp;
-					index = i;
-				}
+	public POINT getValidPoint(int random)
+	{	
+		for (int i=1; i<N_VAL; i++) {
+			if (checkValidSegment(distances.get(random).get(i), points.get(random))) {
+				return distances.get(random).get(i);
 			}
 		}
-		
-		return index;
+
+		return null;
 	}
 	
 	public void generateMap()
 	{
 		Random randomGenerator = new Random();
-		int random, index;
+		int random;
+		POINT p;
 		segments = new ArrayList<>();
 		
 		while (true) {
 			random = randomGenerator.nextInt(N_VAL);
 			
-			index = getValidPoint(random);
-			if (index == -1) {
+			p = getValidPoint(random);
+			if (p == null) {
 				return;
 			}
 			else {
-				segments.add(new SEGMENT(points.get(random), points.get(index)));
+				segments.add(new SEGMENT(points.get(random), p));
 			}
 		}
 	}
