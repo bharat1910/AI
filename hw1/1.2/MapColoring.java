@@ -8,10 +8,12 @@ import java.util.Random;
 
 public class MapColoring
 {
-	public static int N_VAL = 5000;
+	public static int N_VAL = 100;
 	List<List<POINT>> distances; 
 	public int asssignmentMadeNormal;
 	public int asssignmentMadeOptimized;
+	public long timeNormal, timeMRV;
+	public long nodesExpandedNormal, nodesExpandedMRV;
 	
 	public List<POINT> points;
 	public List<SEGMENT> segments;
@@ -285,55 +287,6 @@ public class MapColoring
 		}
 	}
 	
-	public boolean forwardChecking(List<String> values, int index, List<Character> assignment)
-	{ 
-		if (index == N_VAL) {
-			for (int i=0; i<points.size(); i++) {
-				//System.out.println(points.get(i).x + " " + points.get(i).y + " " + assignment.get(i));
-			}
-			return true;
-		}
-		
-		for (int i=0; i<values.size(); i++) {
-			if (values.get(i).length() == 0) {
-				return false;
-			}
-		}
-		
-		String str;
-		for (int i=0; i<segments.size(); i++) {
-			if (segments.get(i).p1.equals(points.get(index))) {
-				int j = points.indexOf(segments.get(i).p2);
-				if (!assignment.get(j).equals(' ')) {
-					str = values.get(index).replace(assignment.get(j) + "", "");
-					values.set(index, str);
-				}
-			}
-			else if (segments.get(i).p2.equals(points.get(index))) {
-				int j = points.indexOf(segments.get(i).p1);
-				if (!assignment.get(j).equals(' ')) {
-					str =values.get(index).replace(assignment.get(j) + "", "");
-					values.set(index, str);
-				}
-			}
-		}
-		
-		List<Character> assignmentCopy = deepCopyAssignment(assignment);
-		for (int i=0; i<values.get(index).length(); i++) {
-			assignmentCopy.set(index, values.get(index).charAt(i));
-			asssignmentMadeOptimized++;
-			
-			List<String> valuesCopy = deepCopyValues(values);
-			forwardChecking(valuesCopy, assignmentCopy);
-						
-			if(forwardChecking(valuesCopy, index + 1, assignmentCopy)) {
-				return true;
-			}
-		}
-		
-		return false;
-	}
-	
 	public boolean mrv(List<String> values, int count, List<Character> assignment)
 	{ 
 		if (count == N_VAL) {
@@ -415,21 +368,27 @@ public class MapColoring
 			assignment.add(' ');
 		}
 		
+		
+		long start, end;
+		
 		System.out.println();
 		System.out.println("MRV :");
 		asssignmentMadeOptimized = 0;
+		start = System.currentTimeMillis();
 		mrv(deepCopyValues(values), 0, deepCopyAssignment(assignment));
+		end = System.currentTimeMillis();
 		System.out.println(asssignmentMadeOptimized);
-		
-		System.out.println("Optimized :");
-		asssignmentMadeOptimized = 0;
-		forwardChecking(deepCopyValues(values), 0, deepCopyAssignment(assignment));
-		System.out.println(asssignmentMadeOptimized);
+		System.out.println(end - start);
+		System.out.println();
 		
 		System.out.println("Normal :");
 		asssignmentMadeNormal = 0;
-		backtracking(values, 0, assignment);
+		start = System.currentTimeMillis();
+		backtracking(deepCopyValues(values), 0, deepCopyAssignment(assignment));
+		end = System.currentTimeMillis();
 		System.out.println(asssignmentMadeNormal);
+		System.out.println(end - start);
+		System.out.println();
 	}
 	
 	public static void main(String[] args) {
