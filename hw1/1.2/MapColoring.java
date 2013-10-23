@@ -8,7 +8,7 @@ import java.util.Random;
 
 public class MapColoring
 {
-	public static int N_VAL = 600;
+	public static int N_VAL = 5000;
 	List<List<POINT>> distances; 
 	public int asssignmentMadeNormal;
 	public int asssignmentMadeOptimized;
@@ -201,30 +201,25 @@ public class MapColoring
 		}
 	}
 
-	public List<List<String>> deepCopyValues(List<List<String>> values)
+	public List<String>	 deepCopyValues(List<String> values)
 	{
-		List<List<String>> valuesCopy = new ArrayList<>();
-		List<String> temp;
+		List<String> valuesCopy = new ArrayList<>();
 		for (int i=0; i<values.size(); i++) {
-			temp = new ArrayList<String>();
-			for (int j=0; j<values.get(i).size(); j++) {
-				temp.add(values.get(i).get(j));
-			}
-			valuesCopy.add(temp);
+			valuesCopy.add(new String(values.get(i)));
 		}
 		return valuesCopy;
 	}
 	
-	public List<String> deepCopyAssignment(List<String> assignment)
+	public List<Character> deepCopyAssignment(List<Character> assignment)
 	{
-		List<String> assignmentCopy = new ArrayList<>();
+		List<Character> assignmentCopy = new ArrayList<>();
 		for (int i=0; i<assignment.size(); i++) {
 			assignmentCopy.add(assignment.get(i));
 		}
 		return assignmentCopy;
 	}
 	
-	public boolean backtracking(List<List<String>> values, int index, List<String> assignment)
+	public boolean backtracking(List<String> values, int index, List<Character> assignment)
 	{ 
 		if (index == N_VAL) {
 			for (int i=0; i<points.size(); i++) {
@@ -233,25 +228,28 @@ public class MapColoring
 			return true;
 		}
 		
+		String str;
 		for (int i=0; i<segments.size(); i++) {
 			if (segments.get(i).p1.equals(points.get(index))) {
 				int j = points.indexOf(segments.get(i).p2);
-				if (!assignment.get(j).equals("")) {
-					values.get(index).remove(assignment.get(j));
+				if (!assignment.get(j).equals(' ')) {
+					str = values.get(index).replace(assignment.get(j) + "", "");
+					values.set(index, str);
 				}
 			}
 			else if (segments.get(i).p2.equals(points.get(index))) {
 				int j = points.indexOf(segments.get(i).p1);
-				if (!assignment.get(j).equals("")) {
-					values.get(index).remove(assignment.get(j));
+				if (!assignment.get(j).equals(' ')) {
+					str = values.get(index).replace(assignment.get(j) + "", "");
+					values.set(index, str);
 				}
 			}
 		}
 		
-		List<List<String>> valuesCopy = deepCopyValues(values);
-		List<String> assignmentCopy = deepCopyAssignment(assignment);
-		for (int i=0; i<values.get(index).size(); i++) {
-			assignmentCopy.set(index, values.get(index).get(i));
+		List<String> valuesCopy = deepCopyValues(values);
+		List<Character> assignmentCopy = deepCopyAssignment(assignment);
+		for (int i=0; i<values.get(index).length(); i++) {
+			assignmentCopy.set(index, values.get(index).charAt(i));
 //			for (int j=0; j<values.size(); j++) {
 //				System.out.print(values.get(j).size() + " ");
 //			}
@@ -265,26 +263,29 @@ public class MapColoring
 		return false;
 	}
 	
-	public void forwardChecking(List<List<String>> values, List<String> assignment)
+	public void forwardChecking(List<String> values, List<Character> assignment)
 	{
 		int index;
+		String str;
 		for (int i=0; i<assignment.size(); i++) {
-			if (!assignment.get(i).equals("")) {
+			if (!assignment.get(i).equals(' ')) {
 				for (int j=0; j<segments.size(); j++) {
 					if (segments.get(j).p1.equals(points.get(i))) {
 						index = points.indexOf(segments.get(j).p2);
-						values.get(index).remove(assignment.get(i));
+						str = values.get(index).replace(assignment.get(i) + "", "");
+						values.set(index, str);
 					}
 					else if (segments.get(j).p2.equals(points.get(i))) {
 						index = points.indexOf(segments.get(j).p1);
-						values.get(index).remove(assignment.get(i));
+						str = values.get(index).replace(assignment.get(i) + "", "");
+						values.set(index, str);
 					}
 				}				
 			}
 		}
 	}
 	
-	public boolean forwardChecking(List<List<String>> values, int index, List<String> assignment)
+	public boolean forwardChecking(List<String> values, int index, List<Character> assignment)
 	{ 
 		if (index == N_VAL) {
 			for (int i=0; i<points.size(); i++) {
@@ -294,33 +295,36 @@ public class MapColoring
 		}
 		
 		for (int i=0; i<values.size(); i++) {
-			if (values.get(i).size() == 0) {
+			if (values.get(i).length() == 0) {
 				return false;
 			}
 		}
 		
+		String str;
 		for (int i=0; i<segments.size(); i++) {
 			if (segments.get(i).p1.equals(points.get(index))) {
 				int j = points.indexOf(segments.get(i).p2);
-				if (!assignment.get(j).equals("")) {
-					values.get(index).remove(assignment.get(j));
+				if (!assignment.get(j).equals(' ')) {
+					str = values.get(index).replace(assignment.get(j) + "", "");
+					values.set(index, str);
 				}
 			}
 			else if (segments.get(i).p2.equals(points.get(index))) {
 				int j = points.indexOf(segments.get(i).p1);
-				if (!assignment.get(j).equals("")) {
-					values.get(index).remove(assignment.get(j));
+				if (!assignment.get(j).equals(' ')) {
+					str =values.get(index).replace(assignment.get(j) + "", "");
+					values.set(index, str);
 				}
 			}
 		}
 		
-		List<String> assignmentCopy = deepCopyAssignment(assignment);
-		for (int i=0; i<values.get(index).size(); i++) {
-			assignmentCopy.set(index, values.get(index).get(i));
+		List<Character> assignmentCopy = deepCopyAssignment(assignment);
+		for (int i=0; i<values.get(index).length(); i++) {
+			assignmentCopy.set(index, values.get(index).charAt(i));
 			asssignmentMadeOptimized++;
 			
-			List<List<String>> valuesCopy = deepCopyValues(values);
-			forwardChecking(values, assignment);
+			List<String> valuesCopy = deepCopyValues(values);
+			forwardChecking(valuesCopy, assignmentCopy);
 						
 			if(forwardChecking(valuesCopy, index + 1, assignmentCopy)) {
 				return true;
@@ -330,7 +334,7 @@ public class MapColoring
 		return false;
 	}
 	
-	public boolean mrv(List<List<String>> values, int count, List<String> assignment)
+	public boolean mrv(List<String> values, int count, List<Character> assignment)
 	{ 
 		if (count == N_VAL) {
 			for (int i=0; i<points.size(); i++) {
@@ -341,37 +345,45 @@ public class MapColoring
 		
 		int index = 0, min_val_index = Integer.MAX_VALUE;
 		for (int i=0; i<values.size(); i++) {
-			if (values.get(i).size() == 0) {
+			//System.out.println(values.get(i).length());
+			if (values.get(i).length() == 0) {
 				return false;
 			}
-			else if (min_val_index > values.size()) {
+			else if (min_val_index > values.get(i).length() && assignment.get(i) == ' ') {
 				index = i;
-				min_val_index = values.size();
+				min_val_index = values.get(i).length();
 			}
 		}
-		
+//		System.out.println("---------------------------------------");
+//		System.out.println(index);
+//		System.out.println("---------------------------------------");
+//		System.out.println("---------------------------------------");
+
+		String str;
 		for (int i=0; i<segments.size(); i++) {
 			if (segments.get(i).p1.equals(points.get(index))) {
 				int j = points.indexOf(segments.get(i).p2);
-				if (!assignment.get(j).equals("")) {
-					values.get(index).remove(assignment.get(j));
+				if (!assignment.get(j).equals(' ')) {
+					str = values.get(index).replace(assignment.get(j) + "", "");
+					values.set(index, str);
 				}
 			}
 			else if (segments.get(i).p2.equals(points.get(index))) {
 				int j = points.indexOf(segments.get(i).p1);
-				if (!assignment.get(j).equals("")) {
-					values.get(index).remove(assignment.get(j));
+				if (!assignment.get(j).equals(' ')) {
+					str = values.get(index).replace(assignment.get(j) + "", "");
+					values.set(index, str);
 				}
 			}
 		}
 		
-		List<String> assignmentCopy = deepCopyAssignment(assignment);
-		for (int i=0; i<values.get(index).size(); i++) {
-			assignmentCopy.set(index, values.get(index).get(i));
+		List<Character> assignmentCopy = deepCopyAssignment(assignment);
+		for (int i=0; i<values.get(index).length(); i++) {
+			assignmentCopy.set(index, values.get(index).charAt(i));
 			asssignmentMadeOptimized++;
 			
-			List<List<String>> valuesCopy = deepCopyValues(values);
-			forwardChecking(values, assignment);
+			List<String> valuesCopy = deepCopyValues(values);
+			forwardChecking(valuesCopy, assignmentCopy);
 						
 			if(mrv(valuesCopy, count + 1, assignmentCopy)) {
 				return true;
@@ -395,18 +407,12 @@ public class MapColoring
 		temp.append("123");
 		System.out.println(temp.toString().replaceAll(", \n123","") + ")");
 		
-		List<List<String>> values = new ArrayList<>();
-		List<String> assignment = new ArrayList<>();
+		List<String> values = new ArrayList<>();
+		List<Character> assignment = new ArrayList<>();
 		
 		for (int i=0; i<N_VAL; i++) {
-			List<String> domain = new ArrayList<>();
-			domain.add("R");
-			domain.add("G");
-			domain.add("Y");
-			domain.add("B");
-			values.add(domain);
-			
-			assignment.add("");
+			values.add("RGYB");
+			assignment.add(' ');
 		}
 		
 		System.out.println();
