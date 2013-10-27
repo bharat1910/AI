@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public class GameAttrition
 {
-	int N_VAL = 2;
+	int N_VAL = 6;
 	int[][] board;
 	int[] moves = {1, 0, -1};
 	Double FRACTION_GRADIENT = 1/(double)2;
@@ -239,7 +239,7 @@ public class GameAttrition
 	{
 		board = new int[N_VAL][N_VAL];
 
-		BufferedReader br = new BufferedReader(new FileReader("hw1/2.2/Test.txt"));
+		BufferedReader br = new BufferedReader(new FileReader("hw1/2.2/Smolensk.txt"));
 		String str;
 		String[] strList;
 		int count = 0;
