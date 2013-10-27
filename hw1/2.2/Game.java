@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public class Game
 {
-	int N_VAL = 6;
+	int N_VAL = 2;
 	int[][] board;
 	int[] moves = {1, 0, -1};
 	
@@ -95,10 +95,17 @@ public class Game
 	private int evaluationFuntionAlphaBeta(Boolean[][] isVisited, int depth,
 			boolean player, int max, int min) {
 		if (depth == 0 || allVisited(isVisited)) {
+			//System.out.println(diff(isVisited));
 			return diff(isVisited);
 		}
 
-		int value = -1;
+		int value, temp;
+		if (player) {
+			value = Integer.MIN_VALUE;
+		}
+		else {
+			value = Integer.MAX_VALUE;
+		}
 
 		for (int i = 0; i < N_VAL; i++) {
 			for (int j = 0; j < N_VAL; j++) {
@@ -109,29 +116,30 @@ public class Game
 						turnAdjacent(isVisitedCopy, i, j, player);
 					}
 
-					value = evaluationFuntionAlphaBeta(isVisitedCopy, depth - 1, !player, max, min);
-					if (player && value > max) {
-						max = value;
-					} else if (!player && value < min) {
+					temp = evaluationFuntionAlphaBeta(isVisitedCopy, depth - 1, !player, max, min);
+					
+					if (player && temp > value) {
+						value = temp;
+					} else if (!player && temp < value) {
+						value = temp;
+					}
+					
+					if (!player && value < min) {
 						min = value;
+					} else if (player && value > max) {
+						max = value;
 					}
 					
 					if (player && value > min) {
 						return value;
-					}
-					if (!player && value < max) {
+					} else if (!player && value < max) {
 						return value;
 					}
 				}
 			}
 		}
 
-		if (player) {
-			return max;
-		}
-		else {
-			return min;
-		}
+		return value;
 	}
 	
 	private int evaluationFuntion(Boolean[][] isVisited,
@@ -205,7 +213,7 @@ public class Game
 					if (hasAdjacent(isVisitedCopy, i, j, player)) {
 						turnAdjacent(isVisitedCopy, i, j, player);
 					}
-					
+
 					temp = evaluationFuntionAlphaBeta(isVisitedCopy, 3, !player, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
 					if (player && temp > value) {
@@ -217,6 +225,7 @@ public class Game
 						movej = j;
 						value = temp;
 					}
+					//System.out.println(value + " " + movei + " " + movej);
 				}
 			}
 		}
@@ -284,7 +293,7 @@ public class Game
 	{
 		board = new int[N_VAL][N_VAL];
 
-		BufferedReader br = new BufferedReader(new FileReader("hw1/2.2/Westerplatte.txt"));
+		BufferedReader br = new BufferedReader(new FileReader("hw1/2.2/Test.txt"));
 		String str;
 		String[] strList;
 		int count = 0;
