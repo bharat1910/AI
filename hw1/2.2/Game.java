@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public class Game
 {
-	int N_VAL = 2;
+	int N_VAL = 6;
 	int[][] board;
 	int[] moves = {1, 0, -1};
 	
@@ -213,8 +213,13 @@ public class Game
 					if (hasAdjacent(isVisitedCopy, i, j, player)) {
 						turnAdjacent(isVisitedCopy, i, j, player);
 					}
-
-					temp = evaluationFuntionAlphaBeta(isVisitedCopy, 3, !player, Integer.MIN_VALUE, Integer.MAX_VALUE);
+					
+					if (player) {
+						temp = evaluationFuntionAlphaBeta(isVisitedCopy, 3, !player, value, Integer.MAX_VALUE);						
+					}
+					else {
+						temp = evaluationFuntionAlphaBeta(isVisitedCopy, 3, !player, Integer.MIN_VALUE, value);	
+					}
 
 					if (player && temp > value) {
 						movei = i;
@@ -293,7 +298,7 @@ public class Game
 	{
 		board = new int[N_VAL][N_VAL];
 
-		BufferedReader br = new BufferedReader(new FileReader("hw1/2.2/Test.txt"));
+		BufferedReader br = new BufferedReader(new FileReader("hw1/2.2/Smolensk.txt"));
 		String str;
 		String[] strList;
 		int count = 0;
