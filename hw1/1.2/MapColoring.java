@@ -6,12 +6,15 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
+import sun.org.mozilla.javascript.ast.Assignment;
+
 public class MapColoring
 {
 	public static int N_VAL = 100;
+	public static int LOWER = 1, UPPER = 100;
 	List<List<POINT>> distances; 
-	public int asssignmentMadeNormal;
-	public int asssignmentMadeOptimized;
+	public int assignmentMadeNormal;
+	public int assignmentMadeOptimized;
 	public long timeNormal, timeMRV;
 	public long nodesExpandedNormal, nodesExpandedMRV;
 	
@@ -255,7 +258,7 @@ public class MapColoring
 //				System.out.print(values.get(j).size() + " ");
 //			}
 //			System.out.println();
-			asssignmentMadeNormal++;
+			assignmentMadeNormal++;
 			if(backtracking(valuesCopy, index + 1, assignmentCopy)) {
 				return true;
 			}
@@ -283,7 +286,7 @@ public class MapColoring
 	{ 
 		if (count == N_VAL) {
 			for (int i=0; i<points.size(); i++) {
-				System.out.println(points.get(i).x + " " + points.get(i).y + " " + assignment.get(i));
+				//System.out.println(points.get(i).x + " " + points.get(i).y + " " + assignment.get(i));
 			}
 			return true;
 		}
@@ -323,7 +326,7 @@ public class MapColoring
 		List<Character> assignmentCopy = deepCopyAssignment(assignment);
 		for (int i=0; i<values.get(index).length(); i++) {
 			assignmentCopy.set(index, values.get(index).charAt(i));
-			asssignmentMadeOptimized++;
+			assignmentMadeOptimized++;
 			
 			List<String> valuesCopy = deepCopyValues(values);
 			forwardChecking(valuesCopy, assignmentCopy);
@@ -336,7 +339,7 @@ public class MapColoring
 		return false;
 	}
 	
-	public void run()
+	public void runMapColoring()
 	{
 		generateLines();
 		generateMap();
@@ -348,7 +351,7 @@ public class MapColoring
 						"[" + segments.get(i).p1.y + "," +  segments.get(i).p2.y + "], \n");
 		}
 		temp.append("123");
-		System.out.println(temp.toString().replaceAll(", \n123","") + ")");
+		//System.out.println(temp.toString().replaceAll(", \n123","") + ")");
 		
 		List<String> values = new ArrayList<>();
 		List<Character> assignment = new ArrayList<>();
@@ -361,27 +364,127 @@ public class MapColoring
 		
 		long start, end;
 		
-		System.out.println();
-		System.out.println("MRV :");
-		asssignmentMadeOptimized = 0;
+		//System.out.println();
+		//System.out.println("MRV :");
+		assignmentMadeOptimized = 0;
 		start = System.currentTimeMillis();
 		mrv(deepCopyValues(values), 0, deepCopyAssignment(assignment));
 		end = System.currentTimeMillis();
-		System.out.println(asssignmentMadeOptimized);
-		System.out.println(end - start);
-		System.out.println();
+		timeMRV = end - start;
+		//System.out.println(asssignmentMadeOptimized);
+		//System.out.println(end - start);
+		//System.out.println();
 		
-		System.out.println("Normal :");
-		asssignmentMadeNormal = 0;
+		//System.out.println("Normal :");
+		assignmentMadeNormal = 0;
 		start = System.currentTimeMillis();
 		backtracking(deepCopyValues(values), 0, deepCopyAssignment(assignment));
 		end = System.currentTimeMillis();
-		System.out.println(asssignmentMadeNormal);
-		System.out.println(end - start);
-		System.out.println();
+		timeNormal = end - start;
+		//System.out.println(asssignmentMadeNormal);
+		//System.out.println(end - start);
+		//System.out.println();
 	}
 	
-	public static void main(String[] args) {
+	public void run()
+	{
+		List<Double> assignmentMadeNormalAvgList = new ArrayList<>();
+		List<Double> assignmentMadeOptAvgList = new ArrayList<>();
+		List<Double> timeNormalAvgList = new ArrayList<>();
+		List<Double> timeOptimizedAvgList = new ArrayList<>();
+		List<Double> edgesList = new ArrayList<>();
+		
+		for (int i=LOWER; i<=UPPER; i++) {
+			Double assignmentMadeNormalAvg = 0.0,
+				     assignmentMadeOptAvg = 0.0,
+				     timeNormalAvg = 0.0,
+				     timeOptimizedAvg = 0.0;
+			int edges = 0;
+			
+			for (int j=0; j<100; j++) {
+				N_VAL = i;
+				runMapColoring();
+				assignmentMadeNormalAvg += assignmentMadeNormal;
+				assignmentMadeOptAvg += assignmentMadeOptimized;
+				timeNormalAvg += timeNormal;
+				timeOptimizedAvg += timeMRV;
+				edges += segments.size();
+			}
+			
+			System.out.println(i);
+			System.out.println("Normal nodes expanded : " + assignmentMadeNormalAvg/100);
+			System.out.println("Optimized nodes expanded : " + assignmentMadeOptAvg/100);
+			System.out.println("Normal time : " + timeNormalAvg/100);
+			System.out.println("Optimized time : " + timeOptimizedAvg/100);
+			System.out.println("Edges : " + edges/(double)100);
+			
+			assignmentMadeNormalAvgList.add(assignmentMadeNormalAvg/100);
+			assignmentMadeOptAvgList.add(assignmentMadeOptAvg/100);
+			timeNormalAvgList.add(timeNormalAvg/100);
+			timeOptimizedAvgList.add(timeOptimizedAvg/100);
+			edgesList.add(edges/(double)100);
+		}
+		
+		String str1 = "", str2 = "";
+		for (int i=LOWER; i<=UPPER; i++) {
+			str1 += "," + i;			
+			str2 += "," + assignmentMadeNormalAvgList.get(i-LOWER);
+		}
+		str1 = str1.replaceFirst(",", "");
+		str2 = str2.replaceFirst(",", "");
+		str1 = str1.replace(",", ",\n");
+		str2 = str2.replace(",", ",\n");
+		System.out.println("plt.plot([" + str1 + "]" + ",\n" + "[" + str2 + "], label=\"Assignments made - normal\")");
+		
+		str1 = ""; str2 = "";
+		for (int i=LOWER; i<=UPPER; i++) {
+			str1 += "," + i;			
+			str2 += "," + assignmentMadeOptAvgList.get(i-LOWER);
+		}
+		str1 = str1.replaceFirst(",", "");
+		str2 = str2.replaceFirst(",", "");
+		str1 = str1.replace(",", ",\n");
+		str2 = str2.replace(",", ",\n");
+		System.out.println("plt.plot([" + str1 + "]" + ",\n" + "[" + str2 + "], label=\"Assignments made - optimized\")");
+		
+		str1 = ""; str2 = "";
+		for (int i=LOWER; i<=UPPER; i++) {
+			str1 += "," + i;			
+			str2 += "," + timeNormalAvgList.get(i-LOWER);
+		}
+		str1 = str1.replaceFirst(",", "");
+		str2 = str2.replaceFirst(",", "");
+		str1 = str1.replace(",", ",\n");
+		str2 = str2.replace(",", ",\n");
+		System.out.println("plt.plot([" + str1 + "]" + ",\n" + "[" + str2 + "], label=\"Time taken - normal\")");
+		
+		str1 = ""; str2 = "";
+		for (int i=LOWER; i<=UPPER; i++) {
+			str1 += "," + i;			
+			str2 += "," + timeOptimizedAvgList.get(i-LOWER);
+		}
+		str1 = str1.replaceFirst(",", "");
+		str2 = str2.replaceFirst(",", "");
+		str1 = str1.replace(",", ",\n");
+		str2 = str2.replace(",", ",\n");
+		System.out.println("plt.plot([" + str1 + "]" + ",\n" + "[" + str2 + "], label=\"Time taken - optimized\")");
+		
+		str1 = ""; str2 = "";
+		for (int i=LOWER; i<=UPPER; i++) {
+			str1 += "," + i;			
+			str2 += "," + edgesList.get(i-LOWER);
+		}
+		str1 = str1.replaceFirst(",", "");
+		str2 = str2.replaceFirst(",", "");
+		str1 = str1.replace(",", ",\n");
+		str2 = str2.replace(",", ",\n");
+		System.out.println("plt.plot([" + str1 + "]" + ",\n" + "[" + str2 + "], label=\"Edges\")");
+		
+		System.out.println("plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)");
+	}
+	
+	public static void main(String[] args)
+	{
 		MapColoring main = new MapColoring();
 		main.run();
 		System.exit(0);
