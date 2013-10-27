@@ -10,8 +10,8 @@ import sun.org.mozilla.javascript.ast.Assignment;
 
 public class MapColoring
 {
-	public static int N_VAL = 100;
-	public static int LOWER = 1, UPPER = 100;
+	public static int N_VAL;
+	public static int LOWER = 1, UPPER = 20;
 	List<List<POINT>> distances; 
 	public int assignmentMadeNormal;
 	public int assignmentMadeOptimized;
@@ -318,6 +318,33 @@ public class MapColoring
 				}
 			}
 		}
+		
+		List<Integer> sortedValues = new ArrayList<>();
+		List<Character> listValues = new ArrayList<>();
+		for (int i=0; i<values.get(index).length(); i++) {
+			conflicts = 0;
+			for (POINT p : pointConnections.get(index)) {
+				if (values.get(points.indexOf(p)).contains(values.get(index).charAt(i) + "")) {
+					conflicts++;
+				}
+			}
+			sortedValues.add(conflicts);
+			listValues.add(values.get(index).charAt(i));
+		}
+		
+		leastConstrainingValue(sortedValues, listValues);
+		
+		//System.out.println("v--------------------------v");
+		//System.out.println(points.get(index).x + " " + points.get(index).y);
+		//System.out.println(values.get(index));
+		String str = "";
+		for (int i=0; i<listValues.size(); i++) {
+			str += listValues.get(i);
+		}
+		values.set(index, str);
+		//System.out.println(values.get(index));
+		//System.out.println("v--------------------------v");
+
 //		System.out.println("---------------------------------------");
 //		System.out.println(index);
 //		System.out.println("---------------------------------------");
@@ -339,6 +366,33 @@ public class MapColoring
 		return false;
 	}
 	
+	private void leastConstrainingValue(List<Integer> sortedValues,
+			List<Character> listValues)
+	{
+//		
+//		String str = "";
+//		for (int i=0; i<sortedValues.size(); i++) {
+//			str += sortedValues.get(i) + " "; 
+//		}
+//		System.out.println(str);
+		
+		int temp;
+		char c;
+		for (int i=0; i<sortedValues.size(); i++) {
+			for (int j=0; j<sortedValues.size() - 1; j++) {
+				if (sortedValues.get(j) > sortedValues.get(j+1)) {
+					temp = sortedValues.get(j);
+					sortedValues.set(j, sortedValues.get(j+1));
+					sortedValues.set(j + 1, temp);
+					c = listValues.get(j);
+					listValues.set(j, listValues.get(j+1));
+					listValues.set(j + 1, c);
+				}
+			}
+		}
+	}
+
+
 	public void runMapColoring()
 	{
 		generateLines();
