@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public class GameAttrition
 {
-	int N_VAL = 6;
+	int N_VAL = 2;
 	int[][] board;
 	int[] moves = {1, 0, -1};
 	
@@ -61,6 +61,32 @@ public class GameAttrition
 		return false;
 	}
 	
+	private boolean unitCountGreater(Boolean[][] isVisited, boolean player)
+	{
+		int playerSum = 0, playerCount = 0, oPlayerSum = 0, oPlayerCount = 0;
+		for (int i=0; i<N_VAL; i++) {
+			for (int j=0; j<N_VAL; j++) {
+				if (isVisited[i][j] == null) {
+					continue;
+				}
+				if (isVisited[i][j] == player) {
+					playerSum += board[i][j];
+					playerCount++;
+				} else if (isVisited[i][j] == !player) {
+					oPlayerSum += board[i][j];
+					oPlayerCount++;
+				}
+			}
+		}
+		
+		if ((playerSum/(double)playerCount) > (oPlayerSum/(double)oPlayerCount)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
 	private boolean turnAdjacent(Boolean[][] isVisited, int i, int j, boolean player)
 	{
 		for (int u : moves) {
@@ -72,7 +98,11 @@ public class GameAttrition
 					j + v < N_VAL &&
 					isVisited[i+u][j+v] != null &&
 					isVisited[i+u][j+v] == !player) {
-					isVisited[i+u][j+v] = player;
+					if (unitCountGreater(isVisited, player)) {
+						isVisited[i+u][j+v] = player;						
+					} else {
+						isVisited[i+u][j+v] = !player;
+					}
 				}
 			}
 		}
@@ -141,7 +171,7 @@ public class GameAttrition
 
 		return value;
 	}
-		
+	
 	private void makeMove(Boolean[][] isVisited, int depth,
 			boolean player)
 	{
@@ -205,7 +235,7 @@ public class GameAttrition
 	{
 		board = new int[N_VAL][N_VAL];
 
-		BufferedReader br = new BufferedReader(new FileReader("hw1/2.2/Smolensk.txt"));
+		BufferedReader br = new BufferedReader(new FileReader("hw1/2.2/Test.txt"));
 		String str;
 		String[] strList;
 		int count = 0;
