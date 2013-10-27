@@ -11,7 +11,7 @@ import sun.org.mozilla.javascript.ast.Assignment;
 public class MapColoring
 {
 	public static int N_VAL;
-	public static int LOWER = 1, UPPER = 20;
+	public static int LOWER = 1, UPPER = 100;
 	List<List<POINT>> distances; 
 	public int assignmentMadeNormal;
 	public int assignmentMadeOptimized;
