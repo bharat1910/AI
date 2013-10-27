@@ -265,4 +265,3 @@ public class GameDuel
 		System.exit(0);
 	}
 }
-		
