@@ -61,9 +61,10 @@ public class GameBattle
 		return false;
 	}
 	
-	private boolean unitCountGreater(Boolean[][] isVisited, boolean player)
+	private boolean unitCountAdjacentGreater(Boolean[][] isVisited, boolean player, int ipos, int jpos)
 	{
 		int playerSum = 0, playerCount = 0, oPlayerSum = 0, oPlayerCount = 0;
+		double unitCountPlayer, unitCountOtherPlayer;
 		for (int i=0; i<N_VAL; i++) {
 			for (int j=0; j<N_VAL; j++) {
 				if (isVisited[i][j] == null) {
@@ -79,10 +80,30 @@ public class GameBattle
 			}
 		}
 		
-		if ((playerSum/(double)playerCount) > (oPlayerSum/(double)oPlayerCount)) {
-			return true;
+		unitCountPlayer = playerSum/(double)playerCount;
+		unitCountOtherPlayer = oPlayerSum/(double)oPlayerCount;
+		playerCount = 0; oPlayerCount = 0;
+		
+		for (int i : moves) {
+			for (int j : moves) {
+				if (Math.abs(i) != Math.abs(j) &&
+					ipos + i >= 0 &&
+					ipos + i < N_VAL &&
+					jpos + j >= 0 &&
+					jpos + j < N_VAL &&
+					isVisited[ipos+i][jpos+j] != null ) {
+					if (isVisited[ipos+i][jpos+j] == player) {
+						playerCount++;
+					} else if (isVisited[ipos+i][jpos+j] == !player) {
+						oPlayerCount++;
+					}
+				}
+			}
 		}
-		else {
+		
+		if ((unitCountPlayer * playerCount) >= (unitCountOtherPlayer * oPlayerCount)) {
+			return true;
+		} else {
 			return false;
 		}
 	}
@@ -98,7 +119,7 @@ public class GameBattle
 					j + v < N_VAL &&
 					isVisited[i+u][j+v] != null &&
 					isVisited[i+u][j+v] == !player) {
-					if (unitCountGreater(isVisited, player)) {
+					if (unitCountAdjacentGreater(isVisited, player, i+u, j+v)) {
 						isVisited[i+u][j+v] = player;						
 					} else {
 						isVisited[i+u][j+v] = !player;

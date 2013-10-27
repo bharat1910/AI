@@ -79,7 +79,7 @@ public class GameDuel
 			}
 		}
 		
-		if ((playerSum/(double)playerCount) > (oPlayerSum/(double)oPlayerCount)) {
+		if ((playerSum/(double)playerCount) >= (oPlayerSum/(double)oPlayerCount)) {
 			return true;
 		}
 		else {
