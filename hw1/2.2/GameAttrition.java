@@ -7,6 +7,8 @@ public class GameAttrition
 	int N_VAL = 2;
 	int[][] board;
 	int[] moves = {1, 0, -1};
+	Double FRACTION_GRADIENT = 1/(double)2;
+	Double FRACTION = 1.0;
 	
 	private Boolean[][] deepCopy(Boolean[][] isVisted)
 	{
@@ -79,7 +81,7 @@ public class GameAttrition
 			}
 		}
 		
-		if ((playerSum/(double)playerCount) > (oPlayerSum/(double)oPlayerCount)) {
+		if ((playerSum/(double)playerCount * FRACTION) >= (oPlayerSum/(double)oPlayerCount * FRACTION)) {
 			return true;
 		}
 		else {
@@ -175,6 +177,8 @@ public class GameAttrition
 	private void makeMove(Boolean[][] isVisited, int depth,
 			boolean player)
 	{
+		FRACTION *= FRACTION_GRADIENT;
+		
 		if (depth == N_VAL * N_VAL) {
 			System.out.println(diff(isVisited));
 			if (diff(isVisited) == 0) {
