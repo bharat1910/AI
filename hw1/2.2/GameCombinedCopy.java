@@ -2,7 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class GameAttrition
+public class GameCombinedCopy
 {
 	int N_VAL = 6;
 	int[][] board;
@@ -81,7 +81,7 @@ public class GameAttrition
 			}
 		}
 		
-		if ((playerSum/(double)playerCount * FRACTION) >= (oPlayerSum/(double)oPlayerCount * FRACTION)) {
+		if ((playerSum/(double)playerCount) >= (oPlayerSum/(double)oPlayerCount)) {
 			return true;
 		}
 		else {
@@ -89,6 +89,78 @@ public class GameAttrition
 		}
 	}
 	
+	private boolean unitCountAdjacentGreater(Boolean[][] isVisited, boolean player, int ipos, int jpos)
+	{
+		int playerSum = 0, playerCount = 0, oPlayerSum = 0, oPlayerCount = 0;
+		double unitCountPlayer, unitCountOtherPlayer;
+		for (int i=0; i<N_VAL; i++) {
+			for (int j=0; j<N_VAL; j++) {
+				if (isVisited[i][j] == null) {
+					continue;
+				}
+				if (isVisited[i][j] == player) {
+					playerSum += board[i][j];
+					playerCount++;
+				} else if (isVisited[i][j] == !player) {
+					oPlayerSum += board[i][j];
+					oPlayerCount++;
+				}
+			}
+		}
+		
+		unitCountPlayer = playerSum/(double)playerCount;
+		unitCountOtherPlayer = oPlayerSum/(double)oPlayerCount;
+		playerCount = 0; oPlayerCount = 0;
+		
+		for (int i : moves) {
+			for (int j : moves) {
+				if (Math.abs(i) != Math.abs(j) &&
+					ipos + i >= 0 &&
+					ipos + i < N_VAL &&
+					jpos + j >= 0 &&
+					jpos + j < N_VAL &&
+					isVisited[ipos+i][jpos+j] != null ) {
+					if (isVisited[ipos+i][jpos+j] == player) {
+						playerCount++;
+					} else if (isVisited[ipos+i][jpos+j] == !player) {
+						oPlayerCount++;
+					}
+				}
+			}
+		}
+		
+		if ((unitCountPlayer * playerCount) >= (unitCountOtherPlayer * oPlayerCount)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	private boolean unitCountAttritionGreater(Boolean[][] isVisited, boolean player)
+	{
+		int playerSum = 0, playerCount = 0, oPlayerSum = 0, oPlayerCount = 0;
+		for (int i=0; i<N_VAL; i++) {
+			for (int j=0; j<N_VAL; j++) {
+				if (isVisited[i][j] == null) {
+					continue;
+				}
+				if (isVisited[i][j] == player) {
+					playerSum += board[i][j];
+					playerCount++;
+				} else if (isVisited[i][j] == !player) {
+					oPlayerSum += board[i][j];
+					oPlayerCount++;
+				}
+			}
+		}
+		
+		if ((playerSum/(double)playerCount * FRACTION) >= (oPlayerSum/(double)oPlayerCount * FRACTION)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 	private boolean turnAdjacent(Boolean[][] isVisited, int i, int j, boolean player)
 	{
 		for (int u : moves) {
@@ -264,9 +336,8 @@ public class GameAttrition
 	
 	public static void main(String[] args) throws IOException
 	{
-		GameAttrition main = new GameAttrition();
+		GameCombinedCopy main = new GameCombinedCopy();
 		main.run();
 		System.exit(0);
 	}
 }
-		
