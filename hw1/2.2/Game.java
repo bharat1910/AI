@@ -8,7 +8,10 @@ public class Game
 	int[][] board;
 	int[] moves = {1, 0, -1};
 	double nodesExpanded;
+	double nodesExpandedPerMove;
 	double timeTaken;
+	double nodesExpandedBlue;
+	double nodesExpandedGreen;
 	
 	private Boolean[][] deepCopy(Boolean[][] isVisted)
 	{
@@ -120,6 +123,8 @@ public class Game
 						turnAdjacent(isVisitedCopy, i, j, player);
 					}
 
+					nodesExpandedPerMove++;
+					
 					temp = evaluationFuntionAlphaBeta(isVisitedCopy, depth - 1, !player, max, min);
 					
 					if (player && temp > value) {
@@ -171,7 +176,10 @@ public class Game
 						turnAdjacent(isVisitedCopy, i, j, player);
 					}
 					
+					nodesExpandedPerMove++;
+					
 					temp = evaluationFuntion(isVisitedCopy, depth - 1, !player);
+					
 					if (player && temp > value) {
 						value = temp;
 					}
@@ -188,6 +196,9 @@ public class Game
 	private void makeMove(Boolean[][] isVisited, int depth,
 			boolean player)
 	{
+		long start = System.currentTimeMillis();
+		nodesExpandedPerMove = 0;
+		
 		if (depth == N_VAL * N_VAL) {
 			System.out.println();
 			int blueScore = 0, greenScore = 0;
@@ -227,11 +238,18 @@ public class Game
 						turnAdjacent(isVisitedCopy, i, j, player);
 					}
 					
+					nodesExpandedPerMove++;
+					
 					if (player) {
-						temp = evaluationFuntionAlphaBeta(isVisitedCopy, 3, !player, value, Integer.MAX_VALUE);						
+						// Depth is the value being passed + 1 since one level
+						// of evaluation is performed by this method itself
+						
+						//temp = evaluationFuntionAlphaBeta(isVisitedCopy, 4, !player, value, Integer.MAX_VALUE);
+						temp = evaluationFuntion(isVisitedCopy, 3, !player);
 					}
 					else {
-						temp = evaluationFuntionAlphaBeta(isVisitedCopy, 3, !player, Integer.MIN_VALUE, value);	
+						//temp = evaluationFuntionAlphaBeta(isVisitedCopy, 4, !player, Integer.MIN_VALUE, value);
+						temp = evaluationFuntion(isVisitedCopy, 3, !player);
 					}
 
 					if (player && temp > value) {
@@ -268,12 +286,25 @@ public class Game
 		
 		System.out.println(((char)('A' + movej)) + "" + (movei + 1));
 		
+		long end = System.currentTimeMillis();
+		timeTaken += (end - start);
+		nodesExpanded += nodesExpandedPerMove;
+		if (player) {
+			nodesExpandedBlue += nodesExpandedPerMove;
+		} else {
+			nodesExpandedGreen += nodesExpandedPerMove;
+		}
+		
 		makeMove(deepCopy(isVisited), depth + 1, !player);
 	}
 	
 	private void run() throws IOException
 	{
 		board = new int[N_VAL][N_VAL];
+		nodesExpanded = 0;
+		timeTaken = 0;
+		nodesExpandedBlue = 0;
+		nodesExpandedGreen = 0;
 
 		BufferedReader br = new BufferedReader(new FileReader("hw1/2.2/Keren.txt"));
 		String str;
@@ -296,6 +327,11 @@ public class Game
 		}
 		
 		makeMove(isVisited, 0, true);
+		
+		System.out.println("Nodes expanded per move : " + nodesExpanded/(N_VAL * N_VAL));
+		System.out.println("Time taken per move : " + timeTaken/(N_VAL * N_VAL));
+		System.out.println("Nodes expanded by Blue : " + nodesExpandedBlue);
+		System.out.println("Nodes expanded by Green : " + nodesExpandedGreen);
 	}
 	
 	public static void main(String[] args) throws IOException
