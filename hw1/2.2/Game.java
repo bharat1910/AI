@@ -264,7 +264,7 @@ public class Game
 			System.out.print(" paradrop ");
 		}
 		
-		System.out.println(((char)('A' + movei)) + "" + (movej + 1));
+		System.out.println(((char)('A' + movej)) + "" + (movei + 1));
 		
 		makeMove(deepCopy(isVisited), depth + 1, !player);
 	}
@@ -346,7 +346,7 @@ public class Game
 			System.out.print(" paradrop ");
 		}
 		
-		System.out.println(((char)('A' + movei)) + "" + (movej + 1));
+		System.out.println(((char)('A' + movej)) + "" + (movei + 1));
 		
 		makeMoveAdditional(deepCopy(isVisited), depth + 1, !player);
 	}
