@@ -63,6 +63,7 @@ public class Game
 	
 	private boolean turnAdjacent(Boolean[][] isVisited, int i, int j, boolean player)
 	{
+		boolean check = false;
 		for (int u : moves) {
 			for (int v : moves) {
 				if (Math.abs(u) != Math.abs(v) &&
@@ -73,11 +74,12 @@ public class Game
 					isVisited[i+u][j+v] != null &&
 					isVisited[i+u][j+v] == !player) {
 					isVisited[i+u][j+v] = player;
+					check = true;
 				}
 			}
 		}
 		
-		return false;
+		return check;
 	}
 	
 	private boolean allVisited(Boolean[][] isVisited)
@@ -185,16 +187,25 @@ public class Game
 			boolean player)
 	{
 		if (depth == N_VAL * N_VAL) {
-			System.out.println(diff(isVisited));
-			if (diff(isVisited) == 0) {
-				System.out.println("Game drawn");
+			System.out.println();
+			int blueScore = 0, greenScore = 0;
+			for (int i=0; i<N_VAL; i++) {
+				for (int j=0; j<N_VAL; j++) {
+					System.out.print(board[i][j]);
+					if (isVisited[i][j]) {
+						blueScore += board[i][j];
+						System.out.print(",B ");
+					} else {
+						greenScore += board[i][j];
+						System.out.print(",G ");
+					}
+				}
+				System.out.println();
 			}
-			else if (diff(isVisited) > 0) {
-				System.out.println("Blue wins");
-			}
-			else {
-				System.out.println("Green Wins");
-			}
+			System.out.println();
+			System.out.println("Blue Score : " + blueScore);
+			System.out.println("Green Score : " + greenScore);
+			System.out.println();
 			return;
 		}
 		
@@ -236,10 +247,25 @@ public class Game
 		}
 		
 		isVisited[movei][movej] = player;
+		boolean check = false;
 		if (hasAdjacent(isVisited, movei, movej, player)) {
-			turnAdjacent(isVisited, movei, movej, player);
+			check = turnAdjacent(isVisited, movei, movej, player);
 		}
-		System.out.println(movei + " " + movej + " " + value);
+		
+		if (player) {
+			System.out.print("blue:");
+		} else {
+			System.out.print("green:");
+		}
+		
+		if (check) {
+			System.out.print(" deathblitz ");
+		} else {
+			System.out.print(" paradrop ");
+		}
+		
+		System.out.println(((char)('A' + movei)) + "" + (movej + 1));
+		
 		makeMove(deepCopy(isVisited), depth + 1, !player);
 	}
 	
@@ -248,16 +274,25 @@ public class Game
 			boolean player)
 	{
 		if (depth == N_VAL * N_VAL) {
-			System.out.println(diff(isVisited));
-			if (diff(isVisited) == 0) {
-				System.out.println("Game drawn");
+			System.out.println();
+			int blueScore = 0, greenScore = 0;
+			for (int i=0; i<N_VAL; i++) {
+				for (int j=0; j<N_VAL; j++) {
+					System.out.print(board[i][j]);
+					if (isVisited[i][j]) {
+						blueScore += board[i][j];
+						System.out.print(",B ");
+					} else {
+						greenScore += board[i][j];
+						System.out.print(",G ");
+					}
+				}
+				System.out.println();
 			}
-			else if (diff(isVisited) > 0) {
-				System.out.println("Blue wins");
-			}
-			else {
-				System.out.println("Green Wins");
-			}
+			System.out.println();
+			System.out.println("Blue Score : " + blueScore);
+			System.out.println("Green Score : " + greenScore);
+			System.out.println();
 			return;
 		}
 		
@@ -294,10 +329,25 @@ public class Game
 		
 		isVisited[movei][movej] = player;
 		isVisited[movei][movej] = player;
+		boolean check = false;
 		if (hasAdjacent(isVisited, movei, movej, player)) {
-			turnAdjacent(isVisited, movei, movej, player);
+			check = turnAdjacent(isVisited, movei, movej, player);
 		}
-		System.out.println(movei + " " + movej + " " + value);
+		
+		if (player) {
+			System.out.print("blue:");
+		} else {
+			System.out.print("green:");
+		}
+		
+		if (check) {
+			System.out.print(" deathblitz ");
+		} else {
+			System.out.print(" paradrop ");
+		}
+		
+		System.out.println(((char)('A' + movei)) + "" + (movej + 1));
+		
 		makeMoveAdditional(deepCopy(isVisited), depth + 1, !player);
 	}
 	
@@ -305,7 +355,7 @@ public class Game
 	{
 		board = new int[N_VAL][N_VAL];
 
-		BufferedReader br = new BufferedReader(new FileReader("hw1/2.2/Smolensk.txt"));
+		BufferedReader br = new BufferedReader(new FileReader("hw1/2.2/Sevastopol.txt"));
 		String str;
 		String[] strList;
 		int count = 0;

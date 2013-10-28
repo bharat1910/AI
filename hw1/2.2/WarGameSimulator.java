@@ -365,7 +365,7 @@ public class WarGameSimulator{
 	
 	public static void main(String []arg) throws IOException{
 		WarGame g = new WarGame();
-		g.initializeState("hw1/2.2/Smolensk.txt");
+		g.initializeState("hw1/2.2/Sevastopol.txt");
 		g.play();
 	}
 }
