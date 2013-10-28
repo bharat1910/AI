@@ -259,9 +259,9 @@ public class Game
 		}
 		
 		if (check) {
-			System.out.print(" deathblitz ");
+			System.out.print(" M1 Death Blitz ");
 		} else {
-			System.out.print(" paradrop ");
+			System.out.print(" Commando Para Drop ");
 		}
 		
 		System.out.println(((char)('A' + movej)) + "" + (movei + 1));
@@ -341,9 +341,9 @@ public class Game
 		}
 		
 		if (check) {
-			System.out.print(" deathblitz ");
+			System.out.print(" M1 Death Blitz ");
 		} else {
-			System.out.print(" paradrop ");
+			System.out.print(" Commando Para Drop ");
 		}
 		
 		System.out.println(((char)('A' + movej)) + "" + (movei + 1));
