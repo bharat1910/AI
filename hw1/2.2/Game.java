@@ -7,6 +7,8 @@ public class Game
 	int N_VAL = 6;
 	int[][] board;
 	int[] moves = {1, 0, -1};
+	double nodesExpanded;
+	double timeTaken;
 	
 	private Boolean[][] deepCopy(Boolean[][] isVisted)
 	{
@@ -269,93 +271,11 @@ public class Game
 		makeMove(deepCopy(isVisited), depth + 1, !player);
 	}
 	
-	
-	private void makeMoveAdditional(Boolean[][] isVisited, int depth,
-			boolean player)
-	{
-		if (depth == N_VAL * N_VAL) {
-			System.out.println();
-			int blueScore = 0, greenScore = 0;
-			for (int i=0; i<N_VAL; i++) {
-				for (int j=0; j<N_VAL; j++) {
-					System.out.print(board[i][j]);
-					if (isVisited[i][j]) {
-						blueScore += board[i][j];
-						System.out.print(",B ");
-					} else {
-						greenScore += board[i][j];
-						System.out.print(",G ");
-					}
-				}
-				System.out.println();
-			}
-			System.out.println();
-			System.out.println("Blue Score : " + blueScore);
-			System.out.println("Green Score : " + greenScore);
-			System.out.println();
-			return;
-		}
-		
-		int value, temp, movei = -1, movej = -1;
-		if (player) {
-			value = Integer.MIN_VALUE;
-		} else {
-			value = Integer.MAX_VALUE;
-		}
-
-		for (int i = 0; i < N_VAL; i++) {
-			for (int j = 0; j < N_VAL; j++) {
-				if (isVisited[i][j] == null) {
-					Boolean[][] isVisitedCopy = deepCopy(isVisited);
-					isVisitedCopy[i][j] = player;
-					if (hasAdjacent(isVisitedCopy, i, j, player)) {
-						turnAdjacent(isVisitedCopy, i, j, player);
-					}
-					
-					temp = evaluationFuntion(isVisitedCopy, 3, !player);
-
-					if (player && temp > value) {
-						movei = i;
-						movej = j;
-						value = temp;
-					} else if (!player && temp < value) {
-						movei = i;
-						movej = j;
-						value = temp;
-					}
-				}
-			}
-		}
-		
-		isVisited[movei][movej] = player;
-		isVisited[movei][movej] = player;
-		boolean check = false;
-		if (hasAdjacent(isVisited, movei, movej, player)) {
-			check = turnAdjacent(isVisited, movei, movej, player);
-		}
-		
-		if (player) {
-			System.out.print("blue:");
-		} else {
-			System.out.print("green:");
-		}
-		
-		if (check) {
-			System.out.print(" M1 Death Blitz ");
-		} else {
-			System.out.print(" Commando Para Drop ");
-		}
-		
-		System.out.println(((char)('A' + movej)) + "" + (movei + 1));
-		
-		makeMoveAdditional(deepCopy(isVisited), depth + 1, !player);
-	}
-	
 	private void run() throws IOException
 	{
 		board = new int[N_VAL][N_VAL];
 
-		BufferedReader br = new BufferedReader(new FileReader("hw1/2.2/Narvik.txt"));
+		BufferedReader br = new BufferedReader(new FileReader("hw1/2.2/Keren.txt"));
 		String str;
 		String[] strList;
 		int count = 0;
@@ -376,15 +296,6 @@ public class Game
 		}
 		
 		makeMove(isVisited, 0, true);
-		
-		isVisited = new Boolean[N_VAL][N_VAL];
-		for (int i=0; i<N_VAL; i++) {
-			for (int j=0; j<N_VAL; j++) {
-				isVisited[i][j] = null;
-			}
-		}
-		
-		makeMoveAdditional(isVisited, 0, true);
 	}
 	
 	public static void main(String[] args) throws IOException
