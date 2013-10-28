@@ -355,7 +355,7 @@ public class Game
 	{
 		board = new int[N_VAL][N_VAL];
 
-		BufferedReader br = new BufferedReader(new FileReader("hw1/2.2/Sevastopol.txt"));
+		BufferedReader br = new BufferedReader(new FileReader("hw1/2.2/Narvik.txt"));
 		String str;
 		String[] strList;
 		int count = 0;
