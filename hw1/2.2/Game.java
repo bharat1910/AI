@@ -236,6 +236,9 @@ public class Game
 		}
 		
 		isVisited[movei][movej] = player;
+		if (hasAdjacent(isVisited, movei, movej, player)) {
+			turnAdjacent(isVisited, movei, movej, player);
+		}
 		System.out.println(movei + " " + movej + " " + value);
 		makeMove(deepCopy(isVisited), depth + 1, !player);
 	}
@@ -290,6 +293,10 @@ public class Game
 		}
 		
 		isVisited[movei][movej] = player;
+		isVisited[movei][movej] = player;
+		if (hasAdjacent(isVisited, movei, movej, player)) {
+			turnAdjacent(isVisited, movei, movej, player);
+		}
 		System.out.println(movei + " " + movej + " " + value);
 		makeMoveAdditional(deepCopy(isVisited), depth + 1, !player);
 	}
