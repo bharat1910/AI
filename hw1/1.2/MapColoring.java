@@ -11,8 +11,8 @@ import sun.org.mozilla.javascript.ast.Assignment;
 public class MapColoring
 {
 	public static int N_VAL;
-	public static int N_ITER = 3;
-	public static int LOWER = 1, UPPER = 50;
+	public static int N_ITER = 10;
+	public static int LOWER = 1, UPPER = 30;
 	List<List<POINT>> distances; 
 	public double assignmentMadeNormal;
 	public double assignmentMadeOptimized;
@@ -466,16 +466,16 @@ public class MapColoring
 			}
 			
 			System.out.println(i);
-			System.out.println("Assingments made - normal : " + assignmentMadeNormalAvg/N_ITER);
-			System.out.println("Assignments made - optimized : " + assignmentMadeOptAvg/N_ITER);
-			System.out.println("Normal time : " + timeNormalAvg/N_ITER);
-			System.out.println("Optimized time : " + timeOptimizedAvg/N_ITER);
+			System.out.println("Assingments made - normal : " + assignmentMadeNormalAvg/N_ITER/i);
+			System.out.println("Assignments made - optimized : " + assignmentMadeOptAvg/N_ITER/i);
+			System.out.println("Normal time : " + timeNormalAvg/N_ITER/i);
+			System.out.println("Optimized time : " + timeOptimizedAvg/N_ITER/i);
 			System.out.println("Edges : " + edges/(double)N_ITER);
 			
-			assignmentMadeNormalAvgList.add(assignmentMadeNormalAvg/N_ITER);
-			assignmentMadeOptAvgList.add(assignmentMadeOptAvg/N_ITER);
-			timeNormalAvgList.add(timeNormalAvg/N_ITER);
-			timeOptimizedAvgList.add(timeOptimizedAvg/N_ITER);
+			assignmentMadeNormalAvgList.add(assignmentMadeNormalAvg/N_ITER/i);
+			assignmentMadeOptAvgList.add(assignmentMadeOptAvg/N_ITER/i);
+			timeNormalAvgList.add(timeNormalAvg/N_ITER/i);
+			timeOptimizedAvgList.add(timeOptimizedAvg/N_ITER/i);
 			edgesList.add(edges/(double)N_ITER);
 		}
 		
