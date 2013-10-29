@@ -11,12 +11,12 @@ import sun.org.mozilla.javascript.ast.Assignment;
 public class MapColoring
 {
 	public static int N_VAL;
-	public static int LOWER = 1, UPPER = 100;
+	public static int N_ITER = 3;
+	public static int LOWER = 1, UPPER = 50;
 	List<List<POINT>> distances; 
-	public int assignmentMadeNormal;
-	public int assignmentMadeOptimized;
+	public double assignmentMadeNormal;
+	public double assignmentMadeOptimized;
 	public long timeNormal, timeMRV;
-	public long nodesExpandedNormal, nodesExpandedMRV;
 	
 	public List<POINT> points;
 	public List<SEGMENT> segments;
@@ -35,7 +35,7 @@ public class MapColoring
 			y = p.y;
 		}
 
-		@Override
+		@Override	
 		public boolean equals(Object obj)
 		{
 			POINT p = (POINT) obj;
@@ -455,7 +455,7 @@ public class MapColoring
 				     timeOptimizedAvg = 0.0;
 			int edges = 0;
 			
-			for (int j=0; j<100; j++) {
+			for (int j=0; j<N_ITER; j++) {
 				N_VAL = i;
 				runMapColoring();
 				assignmentMadeNormalAvg += assignmentMadeNormal;
@@ -466,17 +466,17 @@ public class MapColoring
 			}
 			
 			System.out.println(i);
-			System.out.println("Normal nodes expanded : " + assignmentMadeNormalAvg/100);
-			System.out.println("Optimized nodes expanded : " + assignmentMadeOptAvg/100);
-			System.out.println("Normal time : " + timeNormalAvg/100);
-			System.out.println("Optimized time : " + timeOptimizedAvg/100);
-			System.out.println("Edges : " + edges/(double)100);
+			System.out.println("Assingments made - normal : " + assignmentMadeNormalAvg/N_ITER);
+			System.out.println("Assignments made - optimized : " + assignmentMadeOptAvg/N_ITER);
+			System.out.println("Normal time : " + timeNormalAvg/N_ITER);
+			System.out.println("Optimized time : " + timeOptimizedAvg/N_ITER);
+			System.out.println("Edges : " + edges/(double)N_ITER);
 			
-			assignmentMadeNormalAvgList.add(assignmentMadeNormalAvg/100);
-			assignmentMadeOptAvgList.add(assignmentMadeOptAvg/100);
-			timeNormalAvgList.add(timeNormalAvg/100);
-			timeOptimizedAvgList.add(timeOptimizedAvg/100);
-			edgesList.add(edges/(double)100);
+			assignmentMadeNormalAvgList.add(assignmentMadeNormalAvg/N_ITER);
+			assignmentMadeOptAvgList.add(assignmentMadeOptAvg/N_ITER);
+			timeNormalAvgList.add(timeNormalAvg/N_ITER);
+			timeOptimizedAvgList.add(timeOptimizedAvg/N_ITER);
+			edgesList.add(edges/(double)N_ITER);
 		}
 		
 		String str1 = "", str2 = "";

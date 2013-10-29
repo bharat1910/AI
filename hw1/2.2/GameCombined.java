@@ -86,7 +86,7 @@ public class GameCombined
 			}
 		}
 		
-		if ((playerSum/(double)playerCount) >= (oPlayerSum/(double)oPlayerCount)) {
+		if ((playerSum/(double)playerCount) > (oPlayerSum/(double)oPlayerCount)) {
 			return true;
 		}
 		else {
@@ -134,7 +134,7 @@ public class GameCombined
 			}
 		}
 		
-		if ((unitCountPlayer * playerCount) >= (unitCountOtherPlayer * oPlayerCount)) {
+		if ((unitCountPlayer * playerCount) > (unitCountOtherPlayer * oPlayerCount)) {
 			return true;
 		} else {
 			return false;
@@ -181,7 +181,7 @@ public class GameCombined
 			}
 		}
 		
-		if ((unitCountPlayer * playerCount * FRACTION) >= (unitCountOtherPlayer * oPlayerCount * FRACTION)) {
+		if ((unitCountPlayer * playerCount * FRACTION) > (unitCountOtherPlayer * oPlayerCount * FRACTION)) {
 			return true;
 		} else {
 			return false;
@@ -199,7 +199,7 @@ public class GameCombined
 					j + v < N_VAL &&
 					isVisited[i+u][j+v] != null &&
 					isVisited[i+u][j+v] == !player) {
-					if (battle(isVisited, player, i+u, j+v)) {
+					if (attrition(isVisited, player, i + u, j + v)) {
 						isVisited[i+u][j+v] = player;						
 					} else {
 						isVisited[i+u][j+v] = !player;
@@ -411,7 +411,7 @@ public class GameCombined
 		System.out.println("Nodes expanded by Blue : " + ((long) nodesExpandedBlue));
 		System.out.println("Nodes expanded by Green : " + ((long) nodesExpandedGreen));
 		System.out.println("Nodes expanded per move : " + nodesExpanded/(N_VAL * N_VAL));
-		System.out.println("Time taken per move : " + timeTaken/(N_VAL * N_VAL));
+		System.out.println("Time taken per move (ms) : " + timeTaken/(N_VAL * N_VAL));
 	}
 	
 	public static void main(String[] args) throws IOException
