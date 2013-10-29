@@ -7,6 +7,11 @@ public class GameCombined
 	int N_VAL = 6;
 	int[][] board;
 	int[] moves = {1, 0, -1};
+	double nodesExpanded;
+	double nodesExpandedPerMove;
+	double timeTaken;
+	double nodesExpandedBlue;
+	double nodesExpandedGreen;
 	Double FRACTION_GRADIENT = 1/(double)2;
 	Double FRACTION = 1.0;
 	
@@ -63,7 +68,7 @@ public class GameCombined
 		return false;
 	}
 	
-	private boolean unitCountGreater(Boolean[][] isVisited, boolean player)
+	private boolean duel(Boolean[][] isVisited, boolean player)
 	{
 		int playerSum = 0, playerCount = 0, oPlayerSum = 0, oPlayerCount = 0;
 		for (int i=0; i<N_VAL; i++) {
@@ -89,7 +94,7 @@ public class GameCombined
 		}
 	}
 	
-	private boolean unitCountAdjacentGreater(Boolean[][] isVisited, boolean player, int ipos, int jpos)
+	private boolean battle(Boolean[][] isVisited, boolean player, int ipos, int jpos)
 	{
 		int playerSum = 0, playerCount = 0, oPlayerSum = 0, oPlayerCount = 0;
 		double unitCountPlayer, unitCountOtherPlayer;
@@ -136,9 +141,10 @@ public class GameCombined
 		}
 	}
 	
-	private boolean unitCountAttritionGreater(Boolean[][] isVisited, boolean player)
+	private boolean attrition(Boolean[][] isVisited, boolean player, int ipos, int jpos)
 	{
 		int playerSum = 0, playerCount = 0, oPlayerSum = 0, oPlayerCount = 0;
+		double unitCountPlayer, unitCountOtherPlayer;
 		for (int i=0; i<N_VAL; i++) {
 			for (int j=0; j<N_VAL; j++) {
 				if (isVisited[i][j] == null) {
@@ -154,15 +160,37 @@ public class GameCombined
 			}
 		}
 		
-		if ((playerSum/(double)playerCount * FRACTION) >= (oPlayerSum/(double)oPlayerCount * FRACTION)) {
-			return true;
+		unitCountPlayer = playerSum/(double)playerCount;
+		unitCountOtherPlayer = oPlayerSum/(double)oPlayerCount;
+		playerCount = 0; oPlayerCount = 0;
+		
+		for (int i : moves) {
+			for (int j : moves) {
+				if (Math.abs(i) != Math.abs(j) &&
+					ipos + i >= 0 &&
+					ipos + i < N_VAL &&
+					jpos + j >= 0 &&
+					jpos + j < N_VAL &&
+					isVisited[ipos+i][jpos+j] != null ) {
+					if (isVisited[ipos+i][jpos+j] == player) {
+						playerCount++;
+					} else if (isVisited[ipos+i][jpos+j] == !player) {
+						oPlayerCount++;
+					}
+				}
+			}
 		}
-		else {
+		
+		if ((unitCountPlayer * playerCount * FRACTION) >= (unitCountOtherPlayer * oPlayerCount * FRACTION)) {
+			return true;
+		} else {
 			return false;
 		}
 	}
+	
 	private boolean turnAdjacent(Boolean[][] isVisited, int i, int j, boolean player)
 	{
+		boolean check = false;
 		for (int u : moves) {
 			for (int v : moves) {
 				if (Math.abs(u) != Math.abs(v) &&
@@ -172,16 +200,17 @@ public class GameCombined
 					j + v < N_VAL &&
 					isVisited[i+u][j+v] != null &&
 					isVisited[i+u][j+v] == !player) {
-					if (unitCountGreater(isVisited, player)) {
+					if (battle(isVisited, player, i+u, j+v)) {
 						isVisited[i+u][j+v] = player;						
 					} else {
+						check = true;
 						isVisited[i+u][j+v] = !player;
 					}
 				}
 			}
 		}
 		
-		return false;
+		return check;
 	}
 	
 	private boolean allVisited(Boolean[][] isVisited)
@@ -220,6 +249,8 @@ public class GameCombined
 						turnAdjacent(isVisitedCopy, i, j, player);
 					}
 
+					nodesExpandedPerMove++;
+					
 					temp = evaluationFuntionAlphaBeta(isVisitedCopy, depth - 1, !player, max, min);
 					
 					if (player && temp > value) {
@@ -251,17 +282,28 @@ public class GameCombined
 	{
 		FRACTION *= FRACTION_GRADIENT;
 		
+		long start = System.currentTimeMillis();
+		nodesExpandedPerMove = 0;
+		
 		if (depth == N_VAL * N_VAL) {
-			System.out.println(diff(isVisited));
-			if (diff(isVisited) == 0) {
-				System.out.println("Game drawn");
+			System.out.println();
+			int blueScore = 0, greenScore = 0;
+			for (int i=0; i<N_VAL; i++) {
+				for (int j=0; j<N_VAL; j++) {
+					System.out.print(board[i][j]);
+					if (isVisited[i][j]) {
+						blueScore += board[i][j];
+						System.out.print(",B ");
+					} else {
+						greenScore += board[i][j];
+						System.out.print(",G ");
+					}
+				}
+				System.out.println();
 			}
-			else if (diff(isVisited) > 0) {
-				System.out.println("Blue wins");
-			}
-			else {
-				System.out.println("Green Wins");
-			}
+			System.out.println();
+			System.out.println("Blue Score : " + blueScore);
+			System.out.println("Green Score : " + greenScore);
 			return;
 		}
 		
@@ -281,11 +323,16 @@ public class GameCombined
 						turnAdjacent(isVisitedCopy, i, j, player);
 					}
 					
+					nodesExpandedPerMove++;
+					
 					if (player) {
-						temp = evaluationFuntionAlphaBeta(isVisitedCopy, 3, !player, value, Integer.MAX_VALUE);						
+						// Depth is the value being passed + 1 since one level
+						// of evaluation is performed by this method itself
+						
+						temp = evaluationFuntionAlphaBeta(isVisitedCopy, 4, !player, value, Integer.MAX_VALUE);
 					}
 					else {
-						temp = evaluationFuntionAlphaBeta(isVisitedCopy, 3, !player, Integer.MIN_VALUE, value);	
+						temp = evaluationFuntionAlphaBeta(isVisitedCopy, 4, !player, Integer.MIN_VALUE, value);
 					}
 
 					if (player && temp > value) {
@@ -303,15 +350,46 @@ public class GameCombined
 		}
 		
 		isVisited[movei][movej] = player;
-		System.out.println(movei + " " + movej + " " + value);
+		boolean check = false;
+		if (hasAdjacent(isVisited, movei, movej, player)) {
+			check = turnAdjacent(isVisited, movei, movej, player);
+		}
+		
+		if (player) {
+			System.out.print("blue:");
+		} else {
+			System.out.print("green:");
+		}
+		
+		if (check) {
+			System.out.print(" M1 Death Blitz ");
+		} else {
+			System.out.print(" Commando Para Drop ");
+		}
+		
+		System.out.println(((char)('A' + movej)) + "" + (movei + 1));
+		
+		long end = System.currentTimeMillis();
+		timeTaken += (end - start);
+		nodesExpanded += nodesExpandedPerMove;
+		if (player) {
+			nodesExpandedBlue += nodesExpandedPerMove;
+		} else {
+			nodesExpandedGreen += nodesExpandedPerMove;
+		}
+		
 		makeMove(deepCopy(isVisited), depth + 1, !player);
 	}
 	
 	private void run() throws IOException
 	{
 		board = new int[N_VAL][N_VAL];
+		nodesExpanded = 0;
+		timeTaken = 0;
+		nodesExpandedBlue = 0;
+		nodesExpandedGreen = 0;
 
-		BufferedReader br = new BufferedReader(new FileReader("hw1/2.2/Smolensk.txt"));
+		BufferedReader br = new BufferedReader(new FileReader("hw1/2.2/Westerplatte.txt"));
 		String str;
 		String[] strList;
 		int count = 0;
@@ -332,6 +410,11 @@ public class GameCombined
 		}
 		
 		makeMove(isVisited, 0, true);
+
+		System.out.println("Nodes expanded by Blue : " + ((long) nodesExpandedBlue));
+		System.out.println("Nodes expanded by Green : " + ((long) nodesExpandedGreen));
+		System.out.println("Nodes expanded per move : " + nodesExpanded/(N_VAL * N_VAL));
+		System.out.println("Time taken per move : " + timeTaken/(N_VAL * N_VAL));
 	}
 	
 	public static void main(String[] args) throws IOException
@@ -341,3 +424,4 @@ public class GameCombined
 		System.exit(0);
 	}
 }
+		

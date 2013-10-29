@@ -218,7 +218,6 @@ public class Game
 			System.out.println();
 			System.out.println("Blue Score : " + blueScore);
 			System.out.println("Green Score : " + greenScore);
-			System.out.println();
 			return;
 		}
 		
@@ -244,8 +243,8 @@ public class Game
 						// Depth is the value being passed + 1 since one level
 						// of evaluation is performed by this method itself
 						
-						//temp = evaluationFuntionAlphaBeta(isVisitedCopy, 4, !player, value, Integer.MAX_VALUE);
-						temp = evaluationFuntion(isVisitedCopy, 3, !player);
+						temp = evaluationFuntionAlphaBeta(isVisitedCopy, 4, !player, value, Integer.MAX_VALUE);
+						//temp = evaluationFuntion(isVisitedCopy, 3, !player);
 					}
 					else {
 						//temp = evaluationFuntionAlphaBeta(isVisitedCopy, 4, !player, Integer.MIN_VALUE, value);
@@ -306,7 +305,7 @@ public class Game
 		nodesExpandedBlue = 0;
 		nodesExpandedGreen = 0;
 
-		BufferedReader br = new BufferedReader(new FileReader("hw1/2.2/Keren.txt"));
+		BufferedReader br = new BufferedReader(new FileReader("hw1/2.2/Westerplatte.txt"));
 		String str;
 		String[] strList;
 		int count = 0;
@@ -327,11 +326,11 @@ public class Game
 		}
 		
 		makeMove(isVisited, 0, true);
-		
+
+		System.out.println("Nodes expanded by Blue : " + ((long) nodesExpandedBlue));
+		System.out.println("Nodes expanded by Green : " + ((long) nodesExpandedGreen));
 		System.out.println("Nodes expanded per move : " + nodesExpanded/(N_VAL * N_VAL));
 		System.out.println("Time taken per move : " + timeTaken/(N_VAL * N_VAL));
-		System.out.println("Nodes expanded by Blue : " + nodesExpandedBlue);
-		System.out.println("Nodes expanded by Green : " + nodesExpandedGreen);
 	}
 	
 	public static void main(String[] args) throws IOException
