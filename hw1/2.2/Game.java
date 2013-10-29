@@ -66,9 +66,8 @@ public class Game
 		return false;
 	}
 	
-	private boolean turnAdjacent(Boolean[][] isVisited, int i, int j, boolean player)
+	private void turnAdjacent(Boolean[][] isVisited, int i, int j, boolean player)
 	{
-		boolean check = false;
 		for (int u : moves) {
 			for (int v : moves) {
 				if (Math.abs(u) != Math.abs(v) &&
@@ -79,12 +78,9 @@ public class Game
 					isVisited[i+u][j+v] != null &&
 					isVisited[i+u][j+v] == !player) {
 					isVisited[i+u][j+v] = player;
-					check = true;
 				}
 			}
 		}
-		
-		return check;
 	}
 	
 	private boolean allVisited(Boolean[][] isVisited)
@@ -268,7 +264,8 @@ public class Game
 		isVisited[movei][movej] = player;
 		boolean check = false;
 		if (hasAdjacent(isVisited, movei, movej, player)) {
-			check = turnAdjacent(isVisited, movei, movej, player);
+			check = true;
+			turnAdjacent(isVisited, movei, movej, player);
 		}
 		
 		if (player) {

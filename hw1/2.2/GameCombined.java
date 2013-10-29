@@ -188,9 +188,8 @@ public class GameCombined
 		}
 	}
 	
-	private boolean turnAdjacent(Boolean[][] isVisited, int i, int j, boolean player)
+	private void turnAdjacent(Boolean[][] isVisited, int i, int j, boolean player)
 	{
-		boolean check = false;
 		for (int u : moves) {
 			for (int v : moves) {
 				if (Math.abs(u) != Math.abs(v) &&
@@ -203,14 +202,11 @@ public class GameCombined
 					if (battle(isVisited, player, i+u, j+v)) {
 						isVisited[i+u][j+v] = player;						
 					} else {
-						check = true;
 						isVisited[i+u][j+v] = !player;
 					}
 				}
 			}
 		}
-		
-		return check;
 	}
 	
 	private boolean allVisited(Boolean[][] isVisited)
@@ -352,7 +348,8 @@ public class GameCombined
 		isVisited[movei][movej] = player;
 		boolean check = false;
 		if (hasAdjacent(isVisited, movei, movej, player)) {
-			check = turnAdjacent(isVisited, movei, movej, player);
+			check = true;
+			turnAdjacent(isVisited, movei, movej, player);
 		}
 		
 		if (player) {
